@@ -1,0 +1,31 @@
+name: NEXUS SmallWorld Kernel Migration v1
+
+on:
+  pull_request:
+    paths:
+      - 'provenance/v20_smallworld_source.json'
+      - 'requirements-smallworld-v1.txt'
+      - 'src/agi_nexus/smallworld_v1.py'
+      - 'tests/test_smallworld_v1.py'
+      - 'docs/SMALLWORLD_KERNEL_MIGRATION_V1.md'
+      - '.github/workflows/smallworld-kernel-migration-v1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: nexus-smallworld-migration-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e . -r requirements-smallworld-v1.txt pytest
+      - run: python -m pytest -q tests/test_smallworld_v1.py
