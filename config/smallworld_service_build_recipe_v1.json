@@ -1,0 +1,30 @@
+{
+  "schema": "nexus.service-build-recipe/v1",
+  "recipe_id": "NEXUS_SMALLWORLD_SERVICE_BUILD_RECIPE_V1",
+  "source_repository": "Shtenco/agi_nexus",
+  "source_commit": "ef1a6e3675e53fda4bf91566aec61f1b62fa9336",
+  "service_descriptor_path": "config/smallworld_compute_service_v1.json",
+  "include_files": [
+    {"path": "config/smallworld_compute_service_v1.json", "git_blob_sha": "584f451dbf8b1096e783c808dbc301b24b1b6951"},
+    {"path": "pyproject.toml", "git_blob_sha": "2d176f97046dba12aa5835aa0a75ca4069dc2bc7"},
+    {"path": "requirements-smallworld-v1.txt", "git_blob_sha": "726a10393c7435c8a28afb5b6c3335831d9441a2"},
+    {"path": "schemas/nexus_compute_request_v1.schema.json", "git_blob_sha": "55aad8eb47b8cc799230e50c9dc15a5dac0791a9"},
+    {"path": "schemas/nexus_compute_response_v1.schema.json", "git_blob_sha": "46448f80df5a2f1c0bc35705220b71d1517db906"},
+    {"path": "src/agi_nexus/__init__.py", "git_blob_sha": "31fc70d931290604bb77a4a44d374933ada6fad9"},
+    {"path": "src/agi_nexus/compute_service_v1.py", "git_blob_sha": "f14494e82c8f7ade877c6416e9b9bbf5dbabdce2"},
+    {"path": "src/agi_nexus/smallworld_v1.py", "git_blob_sha": "5354e07cc87fa992f445dc6400313816003a2c69"}
+  ],
+  "archive_profile": {
+    "format": "ZIP_STORED",
+    "entry_order": "LEXICOGRAPHIC_PATH",
+    "fixed_timestamp": "1980-01-01T00:00:00Z",
+    "file_mode": "0644",
+    "strip_extra_fields": true
+  },
+  "dependency_contract": "numpy>=1.26,<3",
+  "dependency_lock_status": "RANGE_ONLY_BLOCKS_BUILD_VERIFICATION",
+  "artifact_semantics": "EXECUTABLE_SOURCE_PACKAGE_CANDIDATE",
+  "build_authority": "SOURCE_REPOSITORY_ONLY",
+  "execution_authority": "NONE",
+  "recipe_digest": "6ec5a878dadf7794f673ef21688e1e0e29d88b534a5f9ac304ee32103b5eb21a"
+}
