@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.service-descriptor/v1",
+  "service_id": "nexus-smallworld-v1",
+  "service_kind": "NEXUS",
+  "python_module": "agi_nexus.compute_service_v1",
+  "entrypoint": "python -m agi_nexus.compute_service_v1",
+  "protocol": "nexus.compute-request/v1+nexus.compute-response/v1",
+  "allowed_operations": ["SMALLWORLD_DIGESTS"],
+  "required_capabilities": ["NEXUS_COMPUTE"],
+  "dependency_contract": "numpy>=1.26,<3",
+  "build_artifact_digest": null,
+  "build_status": "SERVICE_SOURCE_CANDIDATE_NOT_BUILD_VERIFIED",
+  "model_authority": "NONE",
+  "execution_authority": "NONE"
+}
