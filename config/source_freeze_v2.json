@@ -1,0 +1,56 @@
+{
+  "schema": "nexus.source-freeze/v2",
+  "source_repository": "Shtenco/agi_olga",
+  "as_of": "2026-08-21",
+  "rules": {
+    "branch_name_is_not_identity": true,
+    "commit_sha_required_for_promotion": true,
+    "artifact_digest_required_for_component_promotion": true,
+    "unsigned_git_commit_is_not_release_signature": true,
+    "historical_source_is_never_deleted": true
+  },
+  "sources": [
+    {
+      "generation_id": "smallworld-v11.3-main-lineage",
+      "source_ref": "main",
+      "commit_sha": "d88d753995b839fa03cbe9e78b61d103e282fc41",
+      "evidence_paths": ["SMALLWORLD_AGI_V11_ARCHITECTURE.md", ".github/workflows/smallworld-agi-v11.yml"]
+    },
+    {
+      "generation_id": "nexus-600k-main-lineage",
+      "source_ref": "main",
+      "commit_sha": "d88d753995b839fa03cbe9e78b61d103e282fc41",
+      "evidence_paths": ["NEXUS_600K_INTEGRATION.md", "nexus_600k/RELEASE_PROVENANCE.json"]
+    },
+    {
+      "generation_id": "nexus-v18-main-lineage",
+      "source_ref": "main",
+      "commit_sha": "d88d753995b839fa03cbe9e78b61d103e282fc41",
+      "evidence_paths": ["NEXUS_V18_UNIFIED_REPORT.md", "V18_COMPLETE_REPORT.json"]
+    },
+    {
+      "generation_id": "nexus-v20-smallworld-1m",
+      "source_ref": "nexus-v20-smallworld-1m-release",
+      "commit_sha": "85291b0798be2ef03eb6fea8225794756c1896a7",
+      "evidence_paths": ["README_V20_RU.md", "V20_EDGE_INVENTORY_RU.md", "benchmarks/evaluate_v20_top.py"]
+    },
+    {
+      "generation_id": "nexus-v21-collective",
+      "source_ref": "nexus-v21-collective-inference",
+      "commit_sha": "1f8cd8ad323333d4368736f0e3fe22b9d5cad3e9",
+      "evidence_paths": ["nexus_v21/ARCHITECTURE.md"]
+    },
+    {
+      "generation_id": "nexus-r23-real-power",
+      "source_ref": "nexus-r23-real-power-benchmark",
+      "commit_sha": "3c5d5d9b4dadd3ce44195f0cbda5fcdaf94e9fef",
+      "evidence_paths": []
+    },
+    {
+      "generation_id": "nexus-r74-teacher-lab",
+      "source_ref": "nexus-r74-teacher-lab-run",
+      "commit_sha": "08bbead85db62c8409e16d48dfc731b1efa99de9",
+      "evidence_paths": [".github/workflows/nexus-r74-multiteacher.yml"]
+    }
+  ]
+}

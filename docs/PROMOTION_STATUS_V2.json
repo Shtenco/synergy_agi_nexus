@@ -1,0 +1,7 @@
+{
+  "schema": "nexus.promotion-status/v2",
+  "implementation": "PRESENT",
+  "tests": "PRESENT",
+  "runner_execution": "UNKNOWN",
+  "production_promotion_authority": "NONE"
+}
