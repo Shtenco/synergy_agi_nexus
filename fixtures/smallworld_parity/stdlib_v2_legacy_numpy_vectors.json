@@ -1,0 +1,19 @@
+{
+  "schema":"nexus.smallworld-parity-vectors/v1",
+  "reference":"agi_nexus.smallworld_v1 NumPy float32 semantics",
+  "semantics":"NUMPY_FLOAT32_PAIRWISE_COMPAT",
+  "pairwise_block_size":128,
+  "vectors":[
+    {"nodes":1,"local_degree":4,"shortcuts":null,"seed":"NEXUS-V20","adjacency_digest":"e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c","metropolis_digest":"e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"},
+    {"nodes":2,"local_degree":4,"shortcuts":null,"seed":"NEXUS-V20","adjacency_digest":"f6bb1294da2f78cd935b01c7656280df5eaa0439e9d97bc03775825a41a508e4","metropolis_digest":"1dc5c8e021c663cd8f7ecf1fb0c6d4112bc8d7f3c9e0095cd26bd7af7b8d7f13"},
+    {"nodes":8,"local_degree":4,"shortcuts":2,"seed":"NEXUS-V20","adjacency_digest":"62be4b397971b14b315288f9d9e7ff106b73cec3b58fd10a9fcc7e963053373a","metropolis_digest":"6657268c1f13ed7b57038f35614ecc25bd870d147bdf7ff210f025a75f7c6fc2"},
+    {"nodes":10,"local_degree":4,"shortcuts":null,"seed":"NEXUS-V20","adjacency_digest":"c96c905fca98aeaa1e165aba059ad8db3a86ee284eebd74ef317f5c462206134","metropolis_digest":"0cf2dd22b9ed0ab821e2f1dd5186e4d3ab3e48bf4b5a8d87fa55f61001d51a77"},
+    {"nodes":16,"local_degree":6,"shortcuts":3,"seed":"NEXUS-V20","adjacency_digest":"1eb59b6ecb97ceda265b030375b2871449187db7bc7979de3e970d3c4fd71474","metropolis_digest":"9cad36bcf5168fbaf30017f7905dded51f667129cc8edacaa5bc4f5d5faca72b"},
+    {"nodes":33,"local_degree":4,"shortcuts":null,"seed":"ALT-SEED","adjacency_digest":"979d446ee2596651d16eafdf029f6df05a98a6b2720b644c76b90c9896be5033","metropolis_digest":"5bb726d23d10086f8da3d35d204c62f81c7da8056043ac84b073139f065b620c"},
+    {"nodes":127,"local_degree":4,"shortcuts":null,"seed":"NEXUS-V20","adjacency_digest":"86dcf4aee3256f6b3128d1a2ec18e91db843318847b3a8040d9bf4d8d6b39d39","metropolis_digest":"cde74f2b4a1aaa813c64172904f721ed5d9198a836d61da6190de06da8ce3abc"},
+    {"nodes":128,"local_degree":4,"shortcuts":null,"seed":"NEXUS-V20","adjacency_digest":"3087386d9631e2339a6c7c9e7e674c4e403fcb87b82616107791284f48b7c43b","metropolis_digest":"392eaf2a8f6b6ac95410dc2fa2f2edfcf98b455bdbde1b87c589473cc6ddaae2"},
+    {"nodes":129,"local_degree":4,"shortcuts":null,"seed":"NEXUS-V20","adjacency_digest":"ba40ad3146720f897d4ce6d347c2016991a07bfe4f8f5949e592dcd300052aa5","metropolis_digest":"57d55f6be35fc8978db535861c90eb28db3e9c2ef3535e6a480842780f896fb8"},
+    {"nodes":257,"local_degree":8,"shortcuts":11,"seed":"PARITY-V2","adjacency_digest":"db1e9f7eded3bef4224756c24d70f173c05bab2157d440bb5d84155d7fd40dc3","metropolis_digest":"b2ffb9814b417b8830b8bb150e8abcb5c09e9888f1878af329db0e2f467f2f20"}
+  ],
+  "execution_authority":"NONE"
+}
