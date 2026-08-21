@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nexus.compute-response/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema","request_id","operation","request_digest","service_scope","status","nodes","adjacency_digest","metropolis_digest","model_authority","execution_authority","response_digest"],
+  "properties": {
+    "schema": {"const": "nexus.compute-response/v1"},
+    "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "operation": {"const": "SMALLWORLD_DIGESTS"},
+    "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "service_scope": {"const": "SMALLWORLD_KERNEL_ONLY"},
+    "status": {"const": "OK"},
+    "nodes": {"type": "integer", "minimum": 1, "maximum": 1024},
+    "adjacency_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "metropolis_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model_authority": {"const": "NONE"},
+    "execution_authority": {"const": "NONE"},
+    "response_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
