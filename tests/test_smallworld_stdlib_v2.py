@@ -42,15 +42,19 @@ def test_block_boundary_vectors_127_128_129_are_distinct_and_stable():
         )
 
 
-def test_pairwise_reduction_differs_from_naive_case_but_matches_reference_shape():
-    values = [1.0 / 7.0 if i != 5 else 0.0 for i in range(8)]
+def test_pairwise_reduction_preserves_legacy_one_ulp_difference_from_naive_sum():
+    # This is the exact shape of the historical 8-node row 5 before the diagonal
+    # is filled: six 1/7 weights and two zero slots. NumPy's float32 pairwise
+    # reduction differs by one ULP from naive left-to-right accumulation here.
+    values = [0.0, 1.0 / 7.0, 1.0 / 7.0, 1.0 / 7.0, 1.0 / 7.0, 0.0, 1.0 / 7.0, 1.0 / 7.0]
     reference = numpy_float32_pairwise_sum(values)
-    naive = 0.0
     from agi_nexus.smallworld_stdlib_v2 import f32
-    naive = f32(naive)
+    naive = f32(0.0)
     for value in values:
         naive = f32(naive + f32(value))
     assert reference != naive
+    assert reference == f32(0.8571429252624512)
+    assert naive == f32(0.8571428656578064)
 
 
 def test_invalid_inputs_fail_closed():
