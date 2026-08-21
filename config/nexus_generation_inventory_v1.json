@@ -1,0 +1,29 @@
+{
+  "schema": "nexus.generation-inventory/v1",
+  "source_repository": "Shtenco/agi_olga",
+  "source_main_tree": "d88d753995b839fa03cbe9e78b61d103e282fc41",
+  "rules": {
+    "larger_version_is_not_better_by_default": true,
+    "branch_name_is_not_benchmark_evidence": true,
+    "official_private_score_requires_official_evidence": true,
+    "migration_requires_reproducible_artifact": true
+  },
+  "generations": [
+    {"id":"smallworld-v11.3","source_ref":"main","status":"FROZEN_RESEARCH_RELEASE","evidence":"REPRODUCED_INTERNAL","evidence_paths":["README.md","SMALLWORLD_AGI_V11_ARCHITECTURE.md",".github/workflows/smallworld-agi-v11.yml"]},
+    {"id":"nexus-600k","source_ref":"main","status":"FROZEN_RESEARCH_RELEASE","evidence":"REPRODUCED_INTERNAL","evidence_paths":["NEXUS_600K_INTEGRATION.md","nexus_600k/RELEASE_PROVENANCE.json",".github/workflows/nexus-600k.yml"]},
+    {"id":"nexus-v12","source_ref":"nexus-v12-smallworld-audit","status":"RESEARCH_GENERATION","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["NEXUS_V12_MATHEMATICAL_AUDIT.md"]},
+    {"id":"nexus-v13","source_ref":"nexus-v13-world-ru-logic","status":"RESEARCH_GENERATION","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["NEXUS_V13_WORLD_RU_LOGIC.md",".github/workflows/nexus-v13.yml"]},
+    {"id":"nexus-v14","source_ref":"nexus-v14-collective-inference","status":"RESEARCH_GENERATION","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["NEXUS_V14_COLLECTIVE_INFERENCE.md"]},
+    {"id":"nexus-v15","source_ref":"nexus-v15-collective-ab","status":"RESEARCH_GENERATION","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["NEXUS_V15_GITHUB_LIMITS_AND_AB_TEST.md",".github/workflows/collective-ab-benchmark.yml"]},
+    {"id":"nexus-v16","source_ref":"nexus-v16-distributed-weight-fusion","status":"RESEARCH_GENERATION","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["NEXUS_V16_DISTRIBUTED_WEIGHT_FUSION.md"]},
+    {"id":"nexus-v17","source_ref":"nexus-v17-four-way-unified","status":"RESEARCH_GENERATION","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["NEXUS_V17_FOUR_WAY_UNIFIED.md"]},
+    {"id":"nexus-v18","source_ref":"nexus-v18-unified-internal-smallworld","status":"RESEARCH_GENERATION","evidence":"REPRODUCED_INTERNAL","evidence_paths":["NEXUS_V18_UNIFIED_REPORT.md","V18_COMPLETE_REPORT.json"]},
+    {"id":"nexus-v20-smallworld-1m","source_ref":"nexus-v20-smallworld-1m-release","status":"CANDIDATE_RELEASE","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["README_V20_RU.md","V20_EDGE_INVENTORY_RU.md","benchmarks/evaluate_v20_top.py",".github/workflows/nexus-v20.yml"]},
+    {"id":"nexus-v20-world-agi-bip39","source_ref":"nexus-v20-world-agi-bip39","status":"EXPERIMENTAL_BRANCH","evidence":"BRANCH_DISCOVERED","evidence_paths":[]},
+    {"id":"nexus-v21-collective","source_ref":"nexus-v21-collective-inference","status":"EXPERIMENTAL_BRANCH","evidence":"DOCUMENTED_INTERNAL","evidence_paths":["nexus_v21/ARCHITECTURE.md"]},
+    {"id":"nexus-r2-qwen05b-cortex","source_ref":"nexus-r2-qwen05b-cortex","status":"EXPERIMENTAL_BRANCH","evidence":"BRANCH_DISCOVERED","evidence_paths":[]},
+    {"id":"nexus-r2.1-qwen3-14b","source_ref":"nexus-r2.1-qwen3-14b","status":"EXPERIMENTAL_BRANCH","evidence":"BRANCH_DISCOVERED","evidence_paths":[]},
+    {"id":"nexus-r23-real-power","source_ref":"nexus-r23-real-power-benchmark","status":"EXPERIMENTAL_BRANCH","evidence":"BRANCH_DISCOVERED","evidence_paths":[]},
+    {"id":"nexus-r74-teacher-lab","source_ref":"nexus-r74-teacher-lab-run","status":"EXPERIMENTAL_BRANCH","evidence":"BRANCH_DISCOVERED","evidence_paths":[".github/workflows/nexus-r74-multiteacher.yml"]}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "nexus.benchmark-registry/v1",
+  "claim_tiers": ["OFFICIAL_PUBLIC", "REPRODUCED_INTERNAL", "SYNTHETIC", "UNVERIFIED"],
+  "benchmarks": [
+    {"id":"arc-agi-1-public","family":"ARC","tier":"OFFICIAL_PUBLIC","official_private":false,"required_artifacts":["dataset_digest","solver_digest","raw_results"]},
+    {"id":"arc-agi-2-public","family":"ARC","tier":"OFFICIAL_PUBLIC","official_private":false,"required_artifacts":["dataset_digest","solver_digest","raw_results"]},
+    {"id":"arc-agi-3-smoke","family":"ARC3","tier":"REPRODUCED_INTERNAL","official_private":false,"required_artifacts":["environment_digest","agent_digest","raw_results"]},
+    {"id":"hybrid-arc-internal","family":"ARC","tier":"REPRODUCED_INTERNAL","official_private":false,"required_artifacts":["dataset_digest","solver_digest","raw_results"]},
+    {"id":"collective-reasoning-suite","family":"COLLECTIVE","tier":"SYNTHETIC","official_private":false,"required_artifacts":["generator_digest","prompt_digest","raw_results"]},
+    {"id":"russian-logic-suite","family":"RU_LOGIC","tier":"SYNTHETIC","official_private":false,"required_artifacts":["dataset_digest","prompt_digest","raw_results"]},
+    {"id":"real-power-benchmark","family":"GENERAL_REASONING","tier":"UNVERIFIED","official_private":false,"required_artifacts":["benchmark_definition","raw_results"]},
+    {"id":"teacher-lab-r74","family":"DISTILLATION","tier":"UNVERIFIED","official_private":false,"required_artifacts":["teacher_identity","training_config","raw_results"]}
+  ],
+  "prohibited_claims": [
+    "Official private ARC score without official evaluation artifact",
+    "SOTA from synthetic held-out data alone",
+    "Production readiness from repository branch name",
+    "Model quality inferred from parameter count alone"
+  ]
+}
