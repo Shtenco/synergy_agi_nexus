@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.source-capsule-recipe/v1",
+  "recipe_id": "NEXUS_SMALLWORLD_SOURCE_CAPSULE_V1",
+  "artifact_kind": "NON_EXECUTABLE_DETERMINISTIC_SOURCE_CAPSULE",
+  "archive_format": "ZIP_STORED_FIXED_TIMESTAMP",
+  "fixed_timestamp": "1980-01-01T00:00:00Z",
+  "source_paths": [
+    "config/nexus_source_capsule_recipe_v1.json",
+    "provenance/v20_smallworld_source.json",
+    "pyproject.toml",
+    "requirements-smallworld-v1.txt",
+    "src/agi_nexus/smallworld_v1.py",
+    "tools/build_source_capsule_v1.py"
+  ],
+  "dependency_manifest": "requirements-smallworld-v1.txt",
+  "dependency_lock_status": "RANGE_NOT_RUNTIME_LOCKED",
+  "output_name": "agi_nexus_research_kernel_source_v1.zip",
+  "build_evidence_status": "NOT_EXECUTED",
+  "execution_authority": "NONE",
+  "recipe_digest": "a75b05124ed358960a5313b34be38434564f5bcd40db102104516a58a89ccbd9"
+}
