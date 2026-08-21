@@ -1,0 +1,35 @@
+name: Deterministic NEXUS Source Capsule v1
+
+on:
+  pull_request:
+    paths:
+      - 'config/nexus_source_capsule_recipe_v1.json'
+      - 'provenance/v20_smallworld_source.json'
+      - 'pyproject.toml'
+      - 'requirements-smallworld-v1.txt'
+      - 'src/agi_nexus/smallworld_v1.py'
+      - 'tools/build_source_capsule_v1.py'
+      - 'tests/test_source_capsule_v1.py'
+      - 'docs/DETERMINISTIC_SOURCE_CAPSULE_V1.md'
+      - '.github/workflows/deterministic-source-capsule-v1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: nexus-source-capsule-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_source_capsule_v1.py
+      - run: python tools/build_source_capsule_v1.py --output dist/agi_nexus_research_kernel_source_v1.zip
