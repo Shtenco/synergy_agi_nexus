@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.build-readiness/v1",
+  "component_id": "NEXUS_SMALLWORLD_KERNEL_V1",
+  "source_repository": "Shtenco/agi_nexus",
+  "source_commit": "cbc06e83f7f9e242719667e446a090894e11eef1",
+  "source_ref": "feat/smallworld-kernel-migration-v1-20260821",
+  "source_artifacts": [
+    {"path":"requirements-smallworld-v1.txt","git_blob_sha":"726a10393c7435c8a28afb5b6c3335831d9441a2","role":"DEPENDENCY_RANGE"},
+    {"path":"src/agi_nexus/smallworld_v1.py","git_blob_sha":"5354e07cc87fa992f445dc6400313816003a2c69","role":"RUNTIME_COMPONENT"}
+  ],
+  "artifact_kind": "PYTHON_LIBRARY_COMPONENT",
+  "service_entrypoint": null,
+  "python_versions": ["3.11", "3.12"],
+  "dependency_lock_status": "RANGE_ONLY_NOT_REPRODUCIBLE_LOCK",
+  "service_readiness": "COMPONENT_ONLY_NOT_NODE_SERVICE",
+  "build_artifact_digest": null,
+  "execution_authority": "NONE",
+  "readiness_digest": "0e29504a9448c970fd5057123300000aca8c3d88e84f524bed2041cb881aec9a"
+}
