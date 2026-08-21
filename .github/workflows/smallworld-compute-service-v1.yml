@@ -1,0 +1,32 @@
+name: SmallWorld Compute Service v1
+
+on:
+  pull_request:
+    paths:
+      - 'fixtures/compute_service/**'
+      - 'schemas/nexus_compute_request_v1.schema.json'
+      - 'schemas/nexus_compute_response_v1.schema.json'
+      - 'src/agi_nexus/compute_service_v1.py'
+      - 'tests/test_compute_service_v1.py'
+      - 'docs/SMALLWORLD_COMPUTE_SERVICE_V1.md'
+      - '.github/workflows/smallworld-compute-service-v1.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: smallworld-compute-service-v1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e . pytest -r requirements-smallworld-v1.txt
+      - run: python -m pytest -q tests/test_compute_service_v1.py

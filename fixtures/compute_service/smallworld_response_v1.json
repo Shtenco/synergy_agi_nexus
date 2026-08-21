@@ -1,0 +1,14 @@
+{
+  "schema": "nexus.compute-response/v1",
+  "request_id": "req-001",
+  "operation": "SMALLWORLD_DIGESTS",
+  "request_digest": "98a496a97b5db7927774ce90e9158845ba2677fa8a49f238d5acef533a5ca0e3",
+  "service_scope": "SMALLWORLD_KERNEL_ONLY",
+  "status": "OK",
+  "nodes": 8,
+  "adjacency_digest": "62be4b397971b14b315288f9d9e7ff106b73cec3b58fd10a9fcc7e963053373a",
+  "metropolis_digest": "6657268c1f13ed7b57038f35614ecc25bd870d147bdf7ff210f025a75f7c6fc2",
+  "model_authority": "NONE",
+  "execution_authority": "NONE",
+  "response_digest": "1c4ce0498f43b989e1867ae2e4e9d522a42ee2aaa64790c0ce71c912803864fc"
+}
