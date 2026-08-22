@@ -1,0 +1,27 @@
+{
+  "request": {
+    "schema": "nexus.compute-request/v2",
+    "request_id": "fixture-smallworld-v2-8",
+    "operation": "SMALLWORLD_EXACT_DIGESTS",
+    "nodes": 8,
+    "local_degree": 4,
+    "shortcuts": 2,
+    "seed": "NEXUS-V20"
+  },
+  "response": {
+    "schema": "nexus.compute-response/v2",
+    "request_id": "fixture-smallworld-v2-8",
+    "operation": "SMALLWORLD_EXACT_DIGESTS",
+    "request_digest": "374c101e5a32d2f8f9f6e33af06493d7930c8f836275ea1caabe9f7ee9a056f1",
+    "service_scope": "SMALLWORLD_EXACT_KERNEL_ONLY",
+    "status": "OK",
+    "nodes": 8,
+    "numeric_semantics": "EXACT_RATIONAL_METROPOLIS_V2",
+    "topology_semantics": "V20_RING_PLUS_SHA256_SHORTCUT_SELECTION",
+    "adjacency_semantic_digest": "9c4f6f4c890877688bf88caa6b4b18b129f56b038d8c5401955c4d200e2d97a9",
+    "metropolis_semantic_digest": "67c2a7f94c32d9f81d6f94af76146519cc7d40a3f1476685929ac196d41d0001",
+    "model_authority": "NONE",
+    "execution_authority": "NONE",
+    "response_digest": "83fec504d4b475017cc0fc2c77f3e09d3fd38f10fe43b4b86aa96ded558a35d9"
+  }
+}
