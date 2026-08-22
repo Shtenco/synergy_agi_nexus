@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nexus.service-build-recipe/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "recipe_id", "source_repository", "source_commit",
+    "service_descriptor_source_path", "runtime_entrypoint", "include_files",
+    "archive_profile", "dependency_contract", "dependency_lock_status",
+    "artifact_semantics", "numeric_semantics", "build_authority",
+    "execution_authority", "recipe_digest"
+  ],
+  "properties": {
+    "schema": {"const": "nexus.service-build-recipe/v2"},
+    "recipe_id": {"const": "NEXUS_SMALLWORLD_EXACT_STDLIB_BUILD_RECIPE_V2"},
+    "source_repository": {"const": "Shtenco/agi_nexus"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "service_descriptor_source_path": {"const": "config/smallworld_compute_service_v2.json"},
+    "runtime_entrypoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "pythonpath", "module"],
+      "properties": {
+        "kind": {"const": "PYTHON_MODULE"},
+        "pythonpath": {"const": "."},
+        "module": {"const": "agi_nexus.compute_service_v2"}
+      }
+    },
+    "include_files": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source_path", "archive_path", "git_blob_sha"],
+        "properties": {
+          "source_path": {"type": "string", "minLength": 1},
+          "archive_path": {"type": "string", "minLength": 1},
+          "git_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+        }
+      }
+    },
+    "archive_profile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["format", "entry_order", "fixed_timestamp", "file_mode", "strip_extra_fields"],
+      "properties": {
+        "format": {"const": "ZIP_STORED"},
+        "entry_order": {"const": "LEXICOGRAPHIC_ARCHIVE_PATH"},
+        "fixed_timestamp": {"const": "1980-01-01T00:00:00Z"},
+        "file_mode": {"const": "0644"},
+        "strip_extra_fields": {"const": true}
+      }
+    },
+    "dependency_contract": {"const": "PYTHON_STDLIB_ONLY"},
+    "dependency_lock_status": {"const": "STDLIB_ONLY_NO_THIRD_PARTY_RUNTIME_DEPENDENCIES"},
+    "artifact_semantics": {"const": "EXECUTABLE_SOURCE_PACKAGE_CANDIDATE"},
+    "numeric_semantics": {"const": "EXACT_RATIONAL_METROPOLIS_V2"},
+    "build_authority": {"const": "SOURCE_REPOSITORY_ONLY"},
+    "execution_authority": {"const": "NONE"},
+    "recipe_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
