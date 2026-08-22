@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nexus.service-build-artifact/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "recipe_digest", "source_repository", "source_commit", "runtime_entrypoint",
+    "artifact_sha256", "artifact_bytes", "files", "dependency_lock_status", "numeric_semantics",
+    "test_evidence_status", "build_status", "execution_authority", "evidence_digest"
+  ],
+  "properties": {
+    "schema": {"const": "nexus.service-build-artifact/v2"},
+    "recipe_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_repository": {"const": "Shtenco/agi_nexus"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "runtime_entrypoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "pythonpath", "module"],
+      "properties": {
+        "kind": {"const": "PYTHON_MODULE"},
+        "pythonpath": {"const": "."},
+        "module": {"const": "agi_nexus.compute_service_v2"}
+      }
+    },
+    "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact_bytes": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "files": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source_path", "archive_path", "size", "sha256", "git_blob_sha"],
+        "properties": {
+          "source_path": {"type": "string", "minLength": 1},
+          "archive_path": {"type": "string", "minLength": 1},
+          "size": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "git_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+        }
+      }
+    },
+    "dependency_lock_status": {"const": "STDLIB_ONLY_NO_THIRD_PARTY_RUNTIME_DEPENDENCIES"},
+    "numeric_semantics": {"const": "EXACT_RATIONAL_METROPOLIS_V2"},
+    "test_evidence_status": {"const": "NOT_ATTESTED"},
+    "build_status": {"const": "ARTIFACT_BUILT_TEST_EVIDENCE_PENDING"},
+    "execution_authority": {"const": "NONE"},
+    "evidence_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
