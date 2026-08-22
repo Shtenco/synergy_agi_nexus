@@ -1,0 +1,21 @@
+{
+  "schema": "synergy.build-recipe/v2",
+  "recipe_id": "AGI_NEXUS_PROOF_CORE_SOURCE_CANDIDATE_20260822",
+  "repository": "Shtenco/agi_nexus",
+  "source_commit": "0cf581fe6ac6e79bcf39c9ed4833e2d5719ddd6f",
+  "source_role": "NEXUS_PROOF_FIRST_MINIMAL_CORE_V3",
+  "service_spec_digest": "c01a22e4dbd5a1e4e6f2b9a3fbc9e49f559a43f1575cd4e6a6f4c22420f3121b",
+  "artifact_kind": "PYTHON_WHEEL",
+  "package_name": "agi-nexus",
+  "package_version": "0.1.0",
+  "python_requires": ">=3.11",
+  "build_backend": "setuptools.build_meta",
+  "build_system_requirements": ["setuptools>=68"],
+  "runtime_requirements": [],
+  "build_toolchain": {"status": "NOT_FROZEN", "lock_digest": null},
+  "reproducibility_status": "NOT_REPRODUCIBLE_TOOLCHAIN_NOT_FROZEN",
+  "artifact_digest": null,
+  "build_evidence_digest": null,
+  "execution_authority": "NONE",
+  "recipe_digest": "46e874b075c52ee81e4996c6ce3fc027078f54ad4c4824a869d92b597821fe90"
+}
