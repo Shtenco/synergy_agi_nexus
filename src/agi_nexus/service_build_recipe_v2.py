@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import hashlib
+import io
 import json
 from pathlib import Path, PurePosixPath
 import zipfile
@@ -49,6 +50,16 @@ def _digest_without(payload: dict[str, Any], field: str) -> str:
     return hashlib.sha256(canonical_json(body)).hexdigest()
 
 
+def _hex(value: object, length: int, label: str) -> str:
+    if not isinstance(value, str) or len(value) != length or value.lower() != value:
+        raise ServiceBuildV2Error(f"{label} must be lowercase hex")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ServiceBuildV2Error(f"{label} must be hex") from exc
+    return value
+
+
 def git_blob_sha(data: bytes) -> str:
     return hashlib.sha1(f"blob {len(data)}\0".encode("ascii") + data).hexdigest()
 
@@ -78,6 +89,7 @@ def verify_recipe_v2(payload: dict[str, Any]) -> dict[str, Any]:
         raise ServiceBuildV2Error("unexpected recipe id")
     if payload["source_repository"] != "Shtenco/agi_nexus" or payload["source_commit"] != EXPECTED_SOURCE_COMMIT:
         raise ServiceBuildV2Error("source identity drift")
+    _hex(payload["source_commit"], 40, "source_commit")
     if payload["service_descriptor_source_path"] != "config/smallworld_compute_service_v2.json":
         raise ServiceBuildV2Error("service descriptor drift")
     if payload["runtime_entrypoint"] != {
@@ -116,13 +128,7 @@ def verify_recipe_v2(payload: dict[str, Any]) -> dict[str, Any]:
             raise ServiceBuildV2Error("unexpected include-file shape")
         source_path = str(_safe_relpath(item["source_path"], "source_path"))
         archive_path = str(_safe_relpath(item["archive_path"], "archive_path"))
-        sha = item["git_blob_sha"]
-        if not isinstance(sha, str) or len(sha) != 40 or sha.lower() != sha:
-            raise ServiceBuildV2Error("git blob sha must be lowercase sha1")
-        try:
-            int(sha, 16)
-        except ValueError as exc:
-            raise ServiceBuildV2Error("git blob sha must be hex") from exc
+        _hex(item["git_blob_sha"], 40, "git_blob_sha")
         source_paths.append(source_path)
         archive_paths.append(archive_path)
         if source_path == payload["service_descriptor_source_path"]:
@@ -138,6 +144,7 @@ def verify_recipe_v2(payload: dict[str, Any]) -> dict[str, Any]:
         raise ServiceBuildV2Error("recipe digest mismatch")
     if payload["recipe_digest"] != EXPECTED_RECIPE_DIGEST:
         raise ServiceBuildV2Error("unexpected canonical recipe generation")
+    _hex(payload["recipe_digest"], 64, "recipe_digest")
     canonical_json(payload)
     return payload
 
@@ -226,6 +233,55 @@ def build_service_archive_v2(root: Path, recipe: dict[str, Any], output: Path) -
     return evidence
 
 
+def _verify_file_evidence(payload_files: Any, recipe: dict[str, Any]) -> None:
+    if not isinstance(payload_files, list) or len(payload_files) != len(recipe["include_files"]):
+        raise ServiceBuildV2Error("build evidence file set drift")
+    for evidence_file, recipe_file in zip(payload_files, recipe["include_files"], strict=True):
+        expected_fields = {"source_path", "archive_path", "size", "sha256", "git_blob_sha"}
+        if not isinstance(evidence_file, dict) or set(evidence_file) != expected_fields:
+            raise ServiceBuildV2Error("unexpected build evidence file shape")
+        if evidence_file["source_path"] != recipe_file["source_path"]:
+            raise ServiceBuildV2Error("build evidence source path drift")
+        if evidence_file["archive_path"] != recipe_file["archive_path"]:
+            raise ServiceBuildV2Error("build evidence archive path drift")
+        if evidence_file["git_blob_sha"] != recipe_file["git_blob_sha"]:
+            raise ServiceBuildV2Error("build evidence git blob drift")
+        if isinstance(evidence_file["size"], bool) or not isinstance(evidence_file["size"], int) or evidence_file["size"] < 0:
+            raise ServiceBuildV2Error("invalid build evidence file size")
+        _hex(evidence_file["sha256"], 64, "file sha256")
+        _hex(evidence_file["git_blob_sha"], 40, "file git blob sha")
+
+
+def _verify_archive_bytes(artifact_bytes: bytes, payload: dict[str, Any], recipe: dict[str, Any]) -> None:
+    expected_names = [item["archive_path"] for item in recipe["include_files"]]
+    try:
+        with zipfile.ZipFile(io.BytesIO(artifact_bytes), "r") as archive:
+            infos = archive.infolist()
+            names = [item.filename for item in infos]
+            if names != expected_names:
+                raise ServiceBuildV2Error("archive entry set/order drift")
+            for info, file_evidence, recipe_file in zip(infos, payload["files"], recipe["include_files"], strict=True):
+                if info.filename != recipe_file["archive_path"]:
+                    raise ServiceBuildV2Error("archive path does not match recipe")
+                if info.date_time != FIXED_ZIP_TIME:
+                    raise ServiceBuildV2Error("archive timestamp drift")
+                if info.compress_type != zipfile.ZIP_STORED:
+                    raise ServiceBuildV2Error("archive compression profile drift")
+                if info.create_system != 3 or ((info.external_attr >> 16) & 0o777) != 0o644:
+                    raise ServiceBuildV2Error("archive file mode drift")
+                if info.extra or info.comment:
+                    raise ServiceBuildV2Error("archive metadata must be stripped")
+                data = archive.read(info.filename)
+                if len(data) != file_evidence["size"]:
+                    raise ServiceBuildV2Error("archive file size does not match evidence")
+                if hashlib.sha256(data).hexdigest() != file_evidence["sha256"]:
+                    raise ServiceBuildV2Error("archive file sha256 does not match evidence")
+                if git_blob_sha(data) != file_evidence["git_blob_sha"]:
+                    raise ServiceBuildV2Error("archive file git blob does not match recipe/evidence")
+    except (zipfile.BadZipFile, RuntimeError) as exc:
+        raise ServiceBuildV2Error("invalid service archive") from exc
+
+
 def verify_build_evidence_v2(
     payload: dict[str, Any],
     recipe: dict[str, Any],
@@ -243,8 +299,7 @@ def verify_build_evidence_v2(
     if payload["schema"] != "nexus.service-build-artifact/v2":
         raise ServiceBuildV2Error("unexpected build evidence schema")
     for field in ("recipe_digest", "source_repository", "source_commit", "runtime_entrypoint", "dependency_lock_status", "numeric_semantics"):
-        expected_value = recipe[field]
-        if payload[field] != expected_value:
+        if payload[field] != recipe[field]:
             raise ServiceBuildV2Error(f"build evidence drift: {field}")
     if payload["test_evidence_status"] != "NOT_ATTESTED":
         raise ServiceBuildV2Error("v2 builder does not attest tests")
@@ -252,21 +307,16 @@ def verify_build_evidence_v2(
         raise ServiceBuildV2Error("v2 builder cannot claim BUILD_VERIFIED")
     if payload["execution_authority"] != "NONE":
         raise ServiceBuildV2Error("build evidence grants forbidden execution authority")
-    artifact_sha = payload["artifact_sha256"]
-    if not isinstance(artifact_sha, str) or len(artifact_sha) != 64 or artifact_sha.lower() != artifact_sha:
-        raise ServiceBuildV2Error("invalid artifact sha256")
-    try:
-        int(artifact_sha, 16)
-    except ValueError as exc:
-        raise ServiceBuildV2Error("artifact sha256 must be hex") from exc
+    artifact_sha = _hex(payload["artifact_sha256"], 64, "artifact sha256")
     if isinstance(payload["artifact_bytes"], bool) or not isinstance(payload["artifact_bytes"], int) or payload["artifact_bytes"] <= 0:
         raise ServiceBuildV2Error("artifact_bytes must be positive integer")
-    if not isinstance(payload["files"], list) or len(payload["files"]) != len(recipe["include_files"]):
-        raise ServiceBuildV2Error("build evidence file set drift")
+    _verify_file_evidence(payload["files"], recipe)
+    _hex(payload["evidence_digest"], 64, "evidence digest")
     if _digest_without(payload, "evidence_digest") != payload["evidence_digest"]:
         raise ServiceBuildV2Error("build evidence digest mismatch")
     if artifact_bytes is not None:
         if len(artifact_bytes) != payload["artifact_bytes"] or hashlib.sha256(artifact_bytes).hexdigest() != artifact_sha:
             raise ServiceBuildV2Error("artifact bytes do not match build evidence")
+        _verify_archive_bytes(artifact_bytes, payload, recipe)
     canonical_json(payload)
     return payload
