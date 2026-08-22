@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.r710-migration-provenance/v1",
+  "source_repository": "Shtenco/ai_language",
+  "source_freeze_commit": "fc8a32bc949947a42ab5038de0a3e55fa9921e64",
+  "source_release": "NEXUS_R710_PROOF_FIRST_FREEZE_2026-08-21",
+  "blind27_sha256": "9232b50c27af89dfdf71beb53d58c438c3cd7158ea852938bd0c35112a7d6c58",
+  "source_sha256": {
+    "compiler_v2.py": "ed0be9f48c6d015718327c93b68e79016b40f826b1140c08df90a81fa321a027",
+    "evidence_fusion.py": "e2cef5a78d18ebcbd87bc7fddd5631547800b91d1b8ed11e6bccc695949008a3",
+    "option_matcher.py": "10754d12e126843aa03ac66f8ed673a2f326696022cd46c67cb0141f85baacc1",
+    "runtime_v2.py": "f18df22d9ab47daf7f6fa651aef0aeb0a2cf2f4a89c7dd030ce59d5d8eb8d638",
+    "schemas.py": "1fb85ca8c04af5d53155df81a26a826c2b7b947589391ee4c197229d9764ed4e",
+    "solver_v2.py": "fe8122546bf837506ad32a8651226cee5ad0a6633a1b7cec9f76cce5a658973c",
+    "trusted_facts.json": "3806a41a4af40fc122a5dd9c5f8516d0e015d30e9babe87869b810a2bc25220e",
+    "verifier_v2.py": "422b91072e1117fcfc64567f76be384362e4479c066155bf0f2f7735e0df6d4b"
+  },
+  "migration_scope": ["FORMAL_COMPILER", "SOLVER", "INDEPENDENT_VERIFIER", "OPTION_MATCHER", "TRUSTED_FACTS"],
+  "not_migrated": ["FOREIGN_MODEL_CALLS", "R77_META_TEACHER_PICKLE", "NEURAL_OMEGA_R5_CHECKPOINT"],
+  "authority_rule": "FORMAL_VERIFIED_OVERRIDES_HYPOTHESIS_OTHERWISE_ABSTAIN",
+  "execution_authority": "NONE"
+}
