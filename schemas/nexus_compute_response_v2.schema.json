@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nexus.compute-response/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "request_id", "operation", "request_digest", "service_scope", "status", "nodes",
+    "numeric_semantics", "topology_semantics", "adjacency_semantic_digest", "metropolis_semantic_digest",
+    "model_authority", "execution_authority", "response_digest"
+  ],
+  "properties": {
+    "schema": {"const": "nexus.compute-response/v2"},
+    "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "operation": {"const": "SMALLWORLD_EXACT_DIGESTS"},
+    "request_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "service_scope": {"const": "SMALLWORLD_EXACT_KERNEL_ONLY"},
+    "status": {"const": "OK"},
+    "nodes": {"type": "integer", "minimum": 1, "maximum": 1024},
+    "numeric_semantics": {"const": "EXACT_RATIONAL_METROPOLIS_V2"},
+    "topology_semantics": {"const": "V20_RING_PLUS_SHA256_SHORTCUT_SELECTION"},
+    "adjacency_semantic_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "metropolis_semantic_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model_authority": {"const": "NONE"},
+    "execution_authority": {"const": "NONE"},
+    "response_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
