@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "nexus.compute-request/v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "request_id", "operation", "nodes", "local_degree", "shortcuts", "seed"],
+  "properties": {
+    "schema": {"const": "nexus.compute-request/v2"},
+    "request_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "operation": {"const": "SMALLWORLD_EXACT_DIGESTS"},
+    "nodes": {"type": "integer", "minimum": 1, "maximum": 1024},
+    "local_degree": {"type": "integer", "minimum": 0, "maximum": 1024},
+    "shortcuts": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0, "maximum": 4096}]},
+    "seed": {"type": "string", "minLength": 1, "maxLength": 128}
+  }
+}
