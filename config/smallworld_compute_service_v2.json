@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.service-descriptor/v2",
+  "service_id": "nexus",
+  "kind": "NEXUS",
+  "protocol": "nexus.compute-service/v2",
+  "entrypoint": "python -m agi_nexus.compute_service_v2",
+  "operations": ["SMALLWORLD_EXACT_DIGESTS"],
+  "required_capabilities": ["NEXUS_COMPUTE"],
+  "dependency_contract": "PYTHON_STDLIB_ONLY",
+  "numeric_semantics": "EXACT_RATIONAL_METROPOLIS_V2",
+  "topology_semantics": "V20_RING_PLUS_SHA256_SHORTCUT_SELECTION",
+  "build_artifact_digest": null,
+  "model_authority": "NONE",
+  "execution_authority": "NONE"
+}
