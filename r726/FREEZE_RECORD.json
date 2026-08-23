@@ -1,0 +1,8 @@
+{
+  "version": "NEXUS R7.26",
+  "name": "Semantic Observation Completeness + Reflective World-Model Audit",
+  "freeze_zip_sha256": "5d6df9295fb99ba108cd57e52c56f4763bac9f794e26ddb2ef5b76c621f73b95",
+  "blind39_status": "DOES NOT EXIST AT FREEZE",
+  "verified_invariant": "VERIFIED => SemanticObligationCoverage=100% AND WorldModelComplete AND PredictionChecked AND NoOpenContradiction AND CounterfactualChecked AND ProofComplete AND ParentCompleteness",
+  "claim_boundary": "Internal synthetic reasoning evidence only; no ARC-AGI-3 or external benchmark result is part of this freeze."
+}
