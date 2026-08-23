@@ -1,0 +1,51 @@
+name: NEXUS Blind33 Five Teachers PR
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'blind33/**'
+      - '.github/workflows/blind33.yml'
+permissions:
+  contents: read
+jobs:
+  teacher:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - model: ministral-3:3b
+            id: ministral3_3b
+          - model: phi4-mini:3.8b
+            id: phi4mini_3_8b
+          - model: granite3.3:2b
+            id: granite33_2b
+          - model: qwen3:1.7b
+            id: qwen3_1_7b
+          - model: gemma3:1b
+            id: gemma3_1b
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+      - name: Start Ollama
+        run: |
+          nohup ollama serve > ollama.log 2>&1 &
+          sleep 8
+      - name: Pull frozen teacher
+        run: ollama pull '${{ matrix.model }}'
+      - name: Run sealed Blind33
+        working-directory: blind33
+        env:
+          MODEL: ${{ matrix.model }}
+          MODEL_ID: ${{ matrix.id }}
+          OUT: blind33_${{ matrix.id }}.json
+        run: python run_teacher.py
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: blind33-${{ matrix.id }}
+          path: blind33/blind33_${{ matrix.id }}.json
+          if-no-files-found: error
+          retention-days: 30
