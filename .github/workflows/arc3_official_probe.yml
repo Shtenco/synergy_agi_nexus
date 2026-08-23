@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - arc3-official-public-probe-20260824
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
