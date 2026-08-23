@@ -1,0 +1,8 @@
+{
+  "r721_freeze_zip_sha256": "cd76c61b2fca386caba456d16233cba747b09c9f2ce2b768d68784fcd007f5c1",
+  "blind34_benchmark_sha256": "b45db2faf662cd1b27d85053edb68fe883a265df0272199678b3bf6c4a624dbb",
+  "benchmark_n": 200,
+  "design": "8 categories x 25; 40 near-OOD items; no gold embedded in benchmark",
+  "status": "PREINFERENCE COMMITMENT — SCORE NOT YET COMPUTED",
+  "claim_boundary": "Internal synthetic post-freeze benchmark; not an external standardized intelligence score. Evaluator key is held separately and is not committed on this branch."
+}
