@@ -1,0 +1,6 @@
+R7.20 freeze ZIP SHA-256: 44fcecf7976fea6f15b9103c303dc34a50b4c99383eab8e9dcd60713dad1981a
+Blind-33 frozen benchmark SHA-256: a56318266aa92f4ab1ea18972c791a3ede7408f90f4ca7146b9a3f7955c858cc
+Teacher runner local SHA-256: 2ff26adf3e1613370439b11a5854d8f89aa9bdc9605cf86b6fcf31b6211607bb
+Evaluator local SHA-256: febba3287f496169a485ffb643751b64bcbcb939126a7a0fcbfc3ae7edc3334d
+Teachers: ministral-3:3b; phi4-mini:3.8b; granite3.3:2b; qwen3:1.7b; gemma3:1b
+Protocol: temperature=0; seed=33072026; top_p=1.0; num_predict=8; sealed A/B/C/D only.
