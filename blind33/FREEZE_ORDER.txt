@@ -1,0 +1,7 @@
+Chronology:
+1. R7.20 freeze created locally.
+2. R7.20 freeze ZIP SHA-256 fixed: 44fcecf7976fea6f15b9103c303dc34a50b4c99383eab8e9dcd60713dad1981a.
+3. Blind-33 generated only after that freeze.
+4. Blind-33 benchmark SHA-256 fixed: a56318266aa92f4ab1ea18972c791a3ede7408f90f4ca7146b9a3f7955c858cc.
+5. This branch contains no evaluator key/gold labels.
+6. Five-teacher inference occurs after steps 1-5.
