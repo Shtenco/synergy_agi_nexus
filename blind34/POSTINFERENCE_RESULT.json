@@ -1,0 +1,13 @@
+{
+  "blind34_benchmark_sha256": "b45db2faf662cd1b27d85053edb68fe883a265df0272199678b3bf6c4a624dbb",
+  "r721_freeze_zip_sha256": "cd76c61b2fca386caba456d16233cba747b09c9f2ce2b768d68784fcd007f5c1",
+  "mode": "zero-teacher deterministic/structural core",
+  "R720": {"correct":58,"n":200,"accuracy":0.29,"resolved":59,"conditional_accuracy":0.9830508476,"false_verified":1},
+  "R721": {"correct":163,"n":200,"accuracy":0.815,"resolved":168,"conditional_accuracy":0.9702380952,"false_verified":5},
+  "paired": {"corrections":105,"regressions":0,"exact_two_sided_p":4.930380657631324e-32},
+  "r721_95pct_wilson_accuracy": [0.7554293724,0.8626980720],
+  "r721_95pct_wilson_conditional_accuracy": [0.9322302809,0.9872218762],
+  "known_postfreeze_failure": "5/5 compound_percent_near_ood were falsely VERIFIED because the frozen parser applied one percentage update to a two-update composition. R7.21 is not modified after observing this.",
+  "near_ood_metadata_note": "The frozen benchmark design field says near_ood_items=40, but the operational families explicitly named *_near_ood total 30 items. This metadata discrepancy is preserved rather than rewriting the frozen benchmark.",
+  "claim_boundary": "Internal synthetic post-freeze benchmark. Five-teacher confirmatory inference not performed in this result."
+}
