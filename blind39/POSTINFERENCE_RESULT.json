@@ -1,0 +1,13 @@
+{
+  "benchmark_sha256": "8e494586fa947d005a6e8833cebd5c9da6f00e343cda2566383a1ddc769c478f",
+  "r726_freeze_zip_sha256": "5d6df9295fb99ba108cd57e52c56f4763bac9f794e26ddb2ef5b76c621f73b95",
+  "R725": {"correct": 70, "n": 200, "accuracy": 0.35, "resolved": 95, "coverage": 0.475, "false_verified": 25},
+  "R726": {"correct": 90, "n": 200, "accuracy": 0.45, "resolved": 95, "coverage": 0.475, "conditional_accuracy": 0.9473684210526315, "false_verified": 5},
+  "paired": {"corrections": 20, "regressions": 0},
+  "diagnosis": [
+    "R7.26 removed all 20 false VERIFIED errors in intervention_order_v9 from R7.25.",
+    "Five remaining false VERIFIED cases are explicit-open-path near-OOD wording not covered by the frozen open-path lexical obligation detector.",
+    "Fresh causal_clause_accounting, logical_closure, and observation_completeness surfaces also expose unsupported parser/binder variants and mostly fail closed rather than guessing."
+  ],
+  "scientific_boundary": "Post-freeze internal synthetic benchmark. R7.26 must not be patched on Blind-39; Blind-39 is disclosed after this result."
+}
