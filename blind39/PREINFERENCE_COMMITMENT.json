@@ -1,0 +1,10 @@
+{
+  "benchmark": "Blind-39 Observation/Reflection Transfer",
+  "benchmark_sha256": "8e494586fa947d005a6e8833cebd5c9da6f00e343cda2566383a1ddc769c478f",
+  "r726_freeze_zip_sha256": "5d6df9295fb99ba108cd57e52c56f4763bac9f794e26ddb2ef5b76c621f73b95",
+  "n": 200,
+  "composable": 160,
+  "near_ood": 40,
+  "gold_embedded": false,
+  "score_status": "NOT YET COMPUTED"
+}
