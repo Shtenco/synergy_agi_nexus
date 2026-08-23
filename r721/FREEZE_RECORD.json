@@ -1,0 +1,8 @@
+{
+  "release": "NEXUS R7.21 Structural World Model + Typed Relation Executor",
+  "freeze_zip_sha256": "cd76c61b2fca386caba456d16233cba747b09c9f2ce2b768d68784fcd007f5c1",
+  "parent": "NEXUS R7.20",
+  "blind34_status_at_freeze": "DOES NOT EXIST",
+  "disclosed_regression": {"B22_B30":"824/824","Blind31":"197/200","Blind32":"200/200","Blind33":"200/200 DEVELOPMENT ONLY"},
+  "claim_boundary": "Blind-33 is disclosed development for R7.21. Confirmatory evidence must be post-freeze."
+}
