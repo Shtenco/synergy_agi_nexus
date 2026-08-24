@@ -1,0 +1,9 @@
+{
+  "benchmark": "Blind-47 SUPRA Orchestration Stress-10000",
+  "n": 10000,
+  "visible_sha256": "c1dffb4bc071ac29db1e088c18b5c3f74e949648c7dfc391eb80f9f73c993f70",
+  "evaluator_key_sha256": "fbee4a677651b95ac042fd5eccf75d7c994e3bbde2337cb0b65def36b07c5296",
+  "r732_freeze_zip_sha256": "514a068ee0f855244e28d7979eecc135a5c1684fb87ebb9c30e5fb7c94614b0f",
+  "classification": "POST_FREEZE_SYNTHETIC_ORCHESTRATION_MECHANICS_NOT_MODEL_QUALITY",
+  "inference_has_run": false
+}
