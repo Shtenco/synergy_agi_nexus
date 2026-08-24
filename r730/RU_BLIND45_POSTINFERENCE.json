@@ -1,0 +1,12 @@
+{
+  "benchmark": "RU-Blind-45",
+  "r730_freeze_sha256": "21b83305a530d0c5be242972f3e1299aeb79b8dda543bd16ba47d2dc199d8acf",
+  "preinference_commit": "5308fe52ba6816ca0c7934e59331a304b7765df2",
+  "benchmark_sha256": "50cf7bb4f7658f466f00e022eadeb4887ec25a24d0e18f6faf0e6e60c0644a79",
+  "results": {
+    "R7.29": {"standard_correct": 254, "standard_n": 900, "standard_accuracy": 0.2822222222, "near_ood_safe_abstain": 100, "false_verified": 0},
+    "R7.30": {"standard_correct": 637, "standard_n": 900, "standard_accuracy": 0.7077777778, "near_ood_safe_abstain": 100, "false_verified": 0}
+  },
+  "paired": {"corrections": 383, "regressions": 0, "exact_two_sided_sign_p": 1.0151767349262597e-115},
+  "r730_modified_after_inference": false
+}
