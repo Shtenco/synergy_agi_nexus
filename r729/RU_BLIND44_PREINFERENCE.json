@@ -1,0 +1,12 @@
+{
+  "system": "NEXUS R7.29 General Russian / Natural-Language Semantic Binder",
+  "r729_freeze_zip_sha256": "d0b69309da93bd6c800e9863f7a246986df35326f157302b3c052cb8f5ee9a20",
+  "benchmark": "NEXUS-RU-Blind44",
+  "n": 1000,
+  "standard_n": 900,
+  "near_ood_n": 100,
+  "benchmark_sha256": "1142032594436fe264828190ae36127ce6541ba78a1514910971496f185a4665",
+  "evaluator_key_sha256": "fd85b17277fd5bd446041bd58b43008561df6ad4cc1b3ea10dde0c013b6e9afa",
+  "inference_has_run": false,
+  "source_modified_after_freeze": false
+}
