@@ -1,0 +1,11 @@
+{
+  "name": "NEXUS R7.31 Universal Russian Dependency-Semantic Parser + Always-Answer Layer",
+  "date": "2026-08-25",
+  "freeze_zip_sha256": "f708b2b374d22968e670655e99d27b91b9718270b09144082a12dcb8e5ded97a",
+  "parent": "R7.30",
+  "parent_inherited_hash_audit": "338/338 byte-identical",
+  "core_contract": "ALWAYS_ANSWER != ALWAYS_VERIFY",
+  "ru_blind46_status": "DOES NOT EXIST AT FREEZE",
+  "external_rucola_ood_status": "NOT_DOWNLOADED_OR_EVALUATED_AT FREEZE",
+  "source_mutability_after_freeze": false
+}
