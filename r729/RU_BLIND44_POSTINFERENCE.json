@@ -1,0 +1,13 @@
+{
+  "system": "NEXUS R7.29 General Russian / Natural-Language Semantic Binder",
+  "r729_freeze_zip_sha256": "d0b69309da93bd6c800e9863f7a246986df35326f157302b3c052cb8f5ee9a20",
+  "benchmark": "NEXUS-RU-Blind44",
+  "benchmark_sha256": "1142032594436fe264828190ae36127ce6541ba78a1514910971496f185a4665",
+  "preinference_commit": "ac83b06a9ed2994f26d9977e5881f722bc544300",
+  "source_modified_after_freeze": false,
+  "results": {
+    "R7.28": {"correct": 50, "n": 1000, "strict_accuracy": 0.05, "resolved": 100, "conditional_accuracy": 0.5, "false_verified": 50},
+    "R7.29": {"correct": 583, "n": 1000, "strict_accuracy": 0.583, "resolved": 583, "conditional_accuracy": 1.0, "false_verified": 0, "standard_correct": 583, "standard_n": 900, "near_ood_resolved": 0, "near_ood_n": 100}
+  },
+  "interpretation": "Fresh internal evidence of Russian semantic transfer and soundness. RU-1500 remains disclosed development and is not a fresh score."
+}
