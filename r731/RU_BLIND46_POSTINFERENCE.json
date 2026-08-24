@@ -1,0 +1,30 @@
+{
+  "benchmark": "RU-Blind-46 Always-Answer Russian-1000",
+  "benchmark_sha256": "e2815d54be84961fcf4cc117e33815e2e64826d67dc859d0f215998456798177",
+  "r731_freeze_sha256": "f708b2b374d22968e670655e99d27b91b9718270b09144082a12dcb8e5ded97a",
+  "r730": {
+    "correct": 265,
+    "n": 1000,
+    "candidate_accuracy": 0.265,
+    "response_coverage": 0.0,
+    "verified": 265,
+    "verified_precision": 1.0,
+    "false_verified": 0,
+    "ood_correct": 0,
+    "ood_n": 500
+  },
+  "r731": {
+    "correct": 911,
+    "n": 1000,
+    "candidate_accuracy": 0.911,
+    "response_coverage": 1.0,
+    "verified": 600,
+    "verified_precision": 1.0,
+    "false_verified": 0,
+    "standard_correct": 493,
+    "standard_n": 500,
+    "ood_correct": 418,
+    "ood_n": 500
+  },
+  "source_modified_after_freeze": false
+}
