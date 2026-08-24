@@ -1,0 +1,14 @@
+{
+  "version": "NEXUS R7.32 SUPRA Society-of-Minds Orchestrator",
+  "date": "2026-08-25",
+  "freeze_zip_sha256": "514a068ee0f855244e28d7979eecc135a5c1684fb87ebb9c30e5fb7c94614b0f",
+  "blind47_status": "DOES NOT EXIST AT FREEZE",
+  "teacher_pool": 20,
+  "historical_core5": ["Ministral 3B", "Phi-4-mini 3.8B", "Qwen3 1.7B", "Granite 3.3 2B", "Gemma3 1B"],
+  "real_teacher_replay": "Blind-30 calibration only -> Blind-31 retrospective evaluation",
+  "r732_blind31": "184/200 = 92.0%",
+  "combined_parent_plus_core5_oracle": "198/200 = 99.0%",
+  "mean_teacher_calls": 1.305,
+  "challenger15_live_inference": "NOT_RUN_INFRASTRUCTURE",
+  "inference_after_this_record": false
+}
