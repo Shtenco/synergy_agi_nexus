@@ -1,0 +1,17 @@
+{
+  "benchmark": "Blind-47 SUPRA Orchestration Stress-10000",
+  "classification": "POST_FREEZE_SYNTHETIC_ORCHESTRATION_MECHANICS_NOT_MODEL_QUALITY",
+  "r732_freeze_sha256": "514a068ee0f855244e28d7979eecc135a5c1684fb87ebb9c30e5fb7c94614b0f",
+  "preinference_commit": "ebfea2910ff8c0b4d09b8a775a40588f53e4389c",
+  "n": 10000,
+  "r732_correct": 8486,
+  "r732_accuracy": 0.8486,
+  "naive_majority_correct": 8454,
+  "naive_majority_accuracy": 0.8454,
+  "paired_corrections": 1389,
+  "paired_regressions": 1357,
+  "exact_two_sided_sign_p": 0.554,
+  "conclusion": "No statistically meaningful overall superiority over naive majority on this synthetic orchestration stress. R7.32 excels on same-family insufficiency and specialist routing, but shows weaknesses under balanced disagreement and mixed noisy evidence.",
+  "source_patched_after_blind47": false,
+  "challenger15_live_inference": "NOT_RUN_INFRASTRUCTURE"
+}
