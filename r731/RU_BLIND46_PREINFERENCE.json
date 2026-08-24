@@ -1,0 +1,11 @@
+{
+  "benchmark": "RU-Blind-46 Always-Answer Russian-1000",
+  "n": 1000,
+  "standard_n": 500,
+  "near_ood_n": 500,
+  "benchmark_sha256": "e2815d54be84961fcf4cc117e33815e2e64826d67dc859d0f215998456798177",
+  "evaluator_key_sha256": "d7fa2e3376aa7b7840d025e5d938115cb30a2f2d117c9d27346e098af682a1e3",
+  "r731_freeze_sha256": "f708b2b374d22968e670655e99d27b91b9718270b09144082a12dcb8e5ded97a",
+  "inference_has_run": false,
+  "literal_unknown_option_present": false
+}
