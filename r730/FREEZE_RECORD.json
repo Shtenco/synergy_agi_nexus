@@ -1,0 +1,17 @@
+{
+  "version": "NEXUS R7.30",
+  "name": "Compositional Russian Grammar + Open-Lexicon Semantic Parser",
+  "freeze_zip_sha256": "21b83305a530d0c5be242972f3e1299aeb79b8dda543bd16ba47d2dc199d8acf",
+  "date": "2026-08-25",
+  "ru_blind45_status": "DOES NOT EXIST AT FREEZE",
+  "pre_freeze_evidence": {
+    "self_tests": "6/6",
+    "property_tests": "1600/1600",
+    "adversarial_tests": "500/500",
+    "ru_blind44_disclosed": "900/1000; 900/900 standard; 0 false VERIFIED",
+    "ru1500_regression": "1500/1500; 0 false VERIFIED",
+    "blind43_regression": "900/1000; 0 false VERIFIED",
+    "r729_inherited_source_hash_audit": "28/28 unchanged"
+  },
+  "inference_on_ru_blind45_has_run": false
+}
