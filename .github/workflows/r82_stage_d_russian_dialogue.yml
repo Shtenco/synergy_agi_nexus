@@ -1,0 +1,107 @@
+name: NEXUS R8.2 Stage-D Russian dialogue
+
+on:
+  push:
+    branches: [r82-russian-cognitive-dialogue-graph]
+    paths:
+      - 'generations/r82_ru_dialogue/train_stage_d_russian_cyberdialogue.py'
+      - '.github/workflows/r82_stage_d_russian_dialogue.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PYTHONUNBUFFERED: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '2'
+  MKL_NUM_THREADS: '2'
+
+jobs:
+  train-dialogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: r82-russian-cognitive-dialogue-graph
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install CPU neural stack
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'torch>=2.2,<3' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'transformers>=4.44,<5' safetensors
+
+      - name: Deep Stage-D adaptation
+        run: |
+          rm -rf stage_d_out
+          python -m generations.r82_ru_dialogue.train_stage_d_russian_cyberdialogue \
+            --out stage_d_out \
+            --examples 18000 \
+            --steps 240 \
+            --max-length 192 \
+            --batch 2 \
+            --grad-accum 4
+
+      - name: Show raw model dialogue
+        run: |
+          echo '========== RAW DIALOGUE =========='
+          cat stage_d_out/DIALOGUE_RAW.md
+          echo '=================================='
+
+      - name: Publish text evidence into branch
+        run: |
+          set -euo pipefail
+          mkdir -p generations/r82_ru_dialogue/results/stage_d_latest
+          cp stage_d_out/TRAINING_REPORT.json generations/r82_ru_dialogue/results/stage_d_latest/TRAINING_REPORT.json
+          cp stage_d_out/DIALOGUE_RAW.md generations/r82_ru_dialogue/results/stage_d_latest/DIALOGUE_RAW.md
+          cat > generations/r82_ru_dialogue/results/stage_d_latest/RUN_META.txt <<EOF
+          workflow_run_id=${GITHUB_RUN_ID}
+          workflow_run_number=${GITHUB_RUN_NUMBER}
+          source_commit=${GITHUB_SHA}
+          data_provenance=SYNTHETIC_DIALOGUE_FROM_FROZEN_NEXUS_CONTRACTS
+          v8_696k_used=false
+          EOF
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generations/r82_ru_dialogue/results/stage_d_latest
+          git commit -m 'R8.2 Stage-D: publish neural training report and raw dialogue [skip ci]' || true
+          git push origin HEAD:r82-russian-cognitive-dialogue-graph
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo '# NEXUS R8.2 Stage-D Russian dialogue' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f stage_d_out/TRAINING_REPORT.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          x=json.load(open('stage_d_out/TRAINING_REPORT.json',encoding='utf-8'))
+          print(f"- base: **{x['base_model']}**")
+          print(f"- synthetic dialogue examples: **{x['corpus_examples_total']}**")
+          print(f"- optimizer steps: **{x['optimizer_steps']}**")
+          print(f"- trainable params: **{x['trainable_parameters']:,} / {x['total_parameters']:,}**")
+          print(f"- train loss: **{x['train_loss_first20']:.4f} → {x['train_loss_last20']:.4f}**")
+          print(f"- val loss (64): **{x['validation_loss_64']:.4f}**")
+          print(f"- V8-696k used: **{x['v8_696k_used']}**")
+          PY
+          fi
+          if [ -f stage_d_out/DIALOGUE_RAW.md ]; then
+            echo '' >> "$GITHUB_STEP_SUMMARY"
+            cat stage_d_out/DIALOGUE_RAW.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload neural checkpoint and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXUS-R82-STAGE-D-RUSSIAN-${{ github.run_number }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            stage_d_out/model/**
+            stage_d_out/TRAINING_REPORT.json
+            stage_d_out/DIALOGUE_RAW.md
