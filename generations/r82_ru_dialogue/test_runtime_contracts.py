@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import unittest
+
 from .contracts import (
     AnswerPlan,
     Claim,
@@ -15,27 +17,6 @@ from .contracts import (
     independent_lineage_count,
 )
 from .runtime import NexusR82
-
-
-def test_verified_native_cannot_be_overwritten_by_teacher():
-    verified = Claim(
-        "c1", "math", "equals", 4,
-        EpistemicState.KNOWN, Provenance.VERIFIED_NATIVE, 1.0,
-    )
-    teacher = Claim(
-        "c2", "math", "equals", 5,
-        EpistemicState.HYPOTHESIS, Provenance.QUARANTINE_TEACHER, 0.999999,
-    )
-    assert not can_override(verified, teacher)
-
-
-def test_correlated_clones_count_as_one_lineage():
-    items = [
-        Evidence("e1", "c", "teacher-a", "same-family", Provenance.QUARANTINE_TEACHER, 0.9),
-        Evidence("e2", "c", "teacher-b", "same-family", Provenance.QUARANTINE_TEACHER, 0.95),
-        Evidence("e3", "c", "teacher-c", "independent-family", Provenance.QUARANTINE_TEACHER, 0.8),
-    ]
-    assert independent_lineage_count(items) == 2
 
 
 class _Binder:
@@ -103,19 +84,43 @@ class _RejectUnsupported:
         )
 
 
-def test_surface_generator_cannot_commit_unmapped_fact():
-    nexus = NexusR82(
-        context_binder=_Binder(),
-        segmenter=_Segmenter(),
-        graph_brain=_Brain(),
-        reasoning_organs=[_Organ()],
-        proof_verifier=_Proof(),
-        epistemic_governor=_Governor(),
-        surface_cortex=_BadSurface(),
-        surface_verifier=_RejectUnsupported(),
-        max_surface_attempts=1,
-    )
-    result = nexus.respond("Сколько 2+2?", ContextFrame("session"))
-    assert not result.verification.accepted
-    assert "не буду добавлять непроверенные" in result.text
-    assert "неподтверждённый факт" not in result.text
+class RuntimeContracts(unittest.TestCase):
+    def test_verified_native_cannot_be_overwritten_by_teacher(self):
+        verified = Claim(
+            "c1", "math", "equals", 4,
+            EpistemicState.KNOWN, Provenance.VERIFIED_NATIVE, 1.0,
+        )
+        teacher = Claim(
+            "c2", "math", "equals", 5,
+            EpistemicState.HYPOTHESIS, Provenance.QUARANTINE_TEACHER, 0.999999,
+        )
+        self.assertFalse(can_override(verified, teacher))
+
+    def test_correlated_clones_count_as_one_lineage(self):
+        items = [
+            Evidence("e1", "c", "teacher-a", "same-family", Provenance.QUARANTINE_TEACHER, 0.9),
+            Evidence("e2", "c", "teacher-b", "same-family", Provenance.QUARANTINE_TEACHER, 0.95),
+            Evidence("e3", "c", "teacher-c", "independent-family", Provenance.QUARANTINE_TEACHER, 0.8),
+        ]
+        self.assertEqual(independent_lineage_count(items), 2)
+
+    def test_surface_generator_cannot_commit_unmapped_fact(self):
+        nexus = NexusR82(
+            context_binder=_Binder(),
+            segmenter=_Segmenter(),
+            graph_brain=_Brain(),
+            reasoning_organs=[_Organ()],
+            proof_verifier=_Proof(),
+            epistemic_governor=_Governor(),
+            surface_cortex=_BadSurface(),
+            surface_verifier=_RejectUnsupported(),
+            max_surface_attempts=1,
+        )
+        result = nexus.respond("Сколько 2+2?", ContextFrame("session"))
+        self.assertFalse(result.verification.accepted)
+        self.assertIn("не буду добавлять непроверенные", result.text)
+        self.assertNotIn("неподтверждённый факт", result.text)
+
+
+if __name__ == "__main__":
+    unittest.main()
