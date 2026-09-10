@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from typing import Dict, Iterable, List, Protocol, Sequence
+from typing import Dict, Iterable, List, Optional, Protocol, Sequence
 
 from .contracts import (
     AnswerPlan,
@@ -47,6 +47,23 @@ class ProofVerifier(Protocol):
     def verify_claim(self, claim: Claim, graph_state: Dict[str, object]) -> bool: ...
 
 
+class CyberneticSociety(Protocol):
+    """Optional iterative H->T->E->H controller.
+
+    It can run several reasoning rounds and request discriminating internal
+    tests, but it is not the final truth authority. The returned pool is still
+    passed through ProofVerifier and EpistemicGovernor.
+    """
+
+    def run(
+        self,
+        graph_state: Dict[str, object],
+        context: ContextFrame,
+        reasoning_organs: Sequence[ReasoningOrgan],
+        proof_verifier: ProofVerifier,
+    ) -> object: ...
+
+
 class EpistemicGovernor(Protocol):
     def arbitrate(
         self,
@@ -79,8 +96,13 @@ class SurfaceVerifier(Protocol):
 class NexusR82:
     """Sovereign cognitive-dialogue runtime.
 
-    The surface generator never receives authority to change the approved ClaimSet.
-    A fluent answer is committed only after surface verification succeeds.
+    The surface generator never receives authority to change the approved
+    ClaimSet. A fluent answer is committed only after surface verification.
+
+    When ``cybernetic_society`` is present, the reasoning phase is iterative:
+    Hypothesis -> discriminating Test/Query -> Evidence -> revised Hypothesis.
+    This restores the strongest R7.13/R7.16/R7.18/R7.19/R7.33 mechanism while
+    keeping final authority in the verifier/governor path.
     """
 
     def __init__(
@@ -94,6 +116,7 @@ class NexusR82:
         epistemic_governor: EpistemicGovernor,
         surface_cortex: SurfaceCortex,
         surface_verifier: SurfaceVerifier,
+        cybernetic_society: Optional[CyberneticSociety] = None,
         max_surface_attempts: int = 3,
     ) -> None:
         if not reasoning_organs:
@@ -106,7 +129,34 @@ class NexusR82:
         self.epistemic_governor = epistemic_governor
         self.surface_cortex = surface_cortex
         self.surface_verifier = surface_verifier
+        self.cybernetic_society = cybernetic_society
         self.max_surface_attempts = max(1, int(max_surface_attempts))
+
+    def _reason(
+        self,
+        graph_state: Dict[str, object],
+        context: ContextFrame,
+    ) -> tuple[List[Claim], List[Evidence], List[ReasoningTraceSummary]]:
+        if self.cybernetic_society is not None:
+            result = self.cybernetic_society.run(
+                graph_state,
+                context,
+                self.reasoning_organs,
+                self.proof_verifier,
+            )
+            # Structural duck-typing keeps runtime independent of a particular
+            # cybernetic implementation while preserving the public protocol.
+            return list(result.claims), list(result.evidence), list(result.traces)
+
+        all_claims: List[Claim] = []
+        all_evidence: List[Evidence] = []
+        traces: List[ReasoningTraceSummary] = []
+        for organ in self.reasoning_organs:
+            claims, evidence, trace = organ.reason(graph_state, context)
+            all_claims.extend(claims)
+            all_evidence.extend(evidence)
+            traces.append(trace)
+        return all_claims, all_evidence, traces
 
     def respond(self, text: str, context: ContextFrame) -> DialogueResult:
         if not text.strip():
@@ -118,18 +168,11 @@ class NexusR82:
             raise RuntimeError("segmenter produced no semantic segments")
 
         graph_state = self.graph_brain.encode_segments(segments, bound)
+        all_claims, all_evidence, traces = self._reason(graph_state, bound)
 
-        all_claims: List[Claim] = []
-        all_evidence: List[Evidence] = []
-        traces: List[ReasoningTraceSummary] = []
-
-        for organ in self.reasoning_organs:
-            claims, evidence, trace = organ.reason(graph_state, bound)
-            all_claims.extend(claims)
-            all_evidence.extend(evidence)
-            traces.append(trace)
-
-        # Proof-verifiable claims are checked before governor promotion.
+        # Proof-verifiable claims are checked again immediately before governor
+        # promotion. The duplicate boundary is intentional defense-in-depth:
+        # even a custom cybernetic society cannot bypass sovereign verification.
         verified_claims: List[Claim] = []
         for claim in all_claims:
             if claim.epistemic.value == "DERIVED":
@@ -137,6 +180,9 @@ class NexusR82:
                     verified_claims.append(claim)
             else:
                 verified_claims.append(claim)
+
+        accepted_ids = {claim.claim_id for claim in verified_claims}
+        all_evidence = [e for e in all_evidence if e.claim_id in accepted_ids]
 
         approved_claims, plan, updated_context = self.epistemic_governor.arbitrate(
             verified_claims,
@@ -150,7 +196,6 @@ class NexusR82:
             accepted=False,
             reason="surface generation not attempted",
         )
-        last_draft = SurfaceDraft(text="", asserted_claim_ids=())
 
         for _ in range(self.max_surface_attempts):
             draft = self.surface_cortex.realize(plan, approved_claims, updated_context)
@@ -160,7 +205,6 @@ class NexusR82:
                 approved_claims,
                 updated_context,
             )
-            last_draft = draft
             last_verification = result
             if result.accepted and not draft.new_unmapped_assertions:
                 return DialogueResult(
