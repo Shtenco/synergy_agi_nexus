@@ -11,6 +11,7 @@ from .contracts import (
     ReasoningTraceSummary,
 )
 from .cyberlogic import (
+    CompletenessCertificate,
     DefaultCyberneticSociety,
     EvidenceCreditScorer,
     ProgramStep,
@@ -50,6 +51,33 @@ def evidence(eid: str, cid: str, lineage: str, confidence: float = 0.8) -> Evide
         confidence=confidence,
         verified=False,
     )
+
+
+def complete_certificate(**overrides) -> CompletenessCertificate:
+    values = dict(
+        parse_complete=True,
+        operators_consumed_fraction=1.0,
+        state_consistent=True,
+        unique_answer=True,
+        world_type_known=True,
+        attributes_consumed_fraction=1.0,
+        objective_consumed_fraction=1.0,
+        algorithm_matches_type=True,
+        capabilities_available=True,
+        plan_fully_executed=True,
+        capability_proof_complete=True,
+        semantic_obligation_coverage=1.0,
+        domain_recognized=True,
+        full_utterance_parsed=True,
+        intent_parsed=True,
+        no_unconsumed_semantic_content=True,
+        world_model_complete=True,
+        prediction_checked=True,
+        no_open_contradiction=True,
+        counterfactual_checked=True,
+    )
+    values.update(overrides)
+    return CompletenessCertificate(**values)
 
 
 class AcceptVerifier:
@@ -97,7 +125,6 @@ class AdaptiveOrgan:
                     confidence=0.55,
                 ),
             )
-        # A discriminating second round supplies an independent witness for A.
         c1 = claim("H_A", confidence=0.90)
         return (
             [c1],
@@ -108,6 +135,18 @@ class AdaptiveOrgan:
                 confidence=0.90,
             ),
         )
+
+
+class OverclaimingAbducer:
+    def expand(self, claims, evidence_rows, graph_state, context):
+        return [
+            claim(
+                "ABDUCED",
+                epistemic=EpistemicState.KNOWN,
+                provenance=Provenance.VERIFIED_NATIVE,
+                confidence=1.0,
+            )
+        ]
 
 
 class CyberLogicContracts(unittest.TestCase):
@@ -180,6 +219,62 @@ class CyberLogicContracts(unittest.TestCase):
         self.assertIn("H_A", result.rounds[0].proposal.target_claim_ids)
         self.assertIn("H_B", result.rounds[0].proposal.target_claim_ids)
         self.assertGreaterEqual(organ.calls, 2)
+
+    def test_complete_certificate_is_verified_eligible(self):
+        cert = complete_certificate()
+        self.assertTrue(cert.verified_eligible)
+        self.assertEqual(cert.missing(), ())
+
+    def test_correct_answer_cannot_stop_when_operator_is_unconsumed(self):
+        sovereign = claim(
+            "4",
+            provenance=Provenance.VERIFIED_NATIVE,
+            epistemic=EpistemicState.KNOWN,
+            confidence=1.0,
+        )
+        organ = FixedOrgan("proof", [sovereign], [evidence("e", "4", "native", 1.0)])
+        state = {"_completeness": complete_certificate(operators_consumed_fraction=0.5)}
+        result = DefaultCyberneticSociety(max_rounds=2).run(state, CTX, [organ], AcceptVerifier())
+        self.assertEqual(result.stopped_by, "incomplete_at_budget_limit")
+        self.assertIn("operators_consumed_fraction", result.rounds[0].completeness_missing)
+        self.assertIsNotNone(result.rounds[0].proposal)
+
+    def test_counterfactual_check_is_required_when_certificate_is_present(self):
+        strong = claim("H", confidence=0.99)
+        organ = FixedOrgan(
+            "reflective",
+            [strong],
+            [evidence("e1", "H", "L1", 0.99), evidence("e2", "H", "L2", 0.99)],
+        )
+        state = {"_completeness": complete_certificate(counterfactual_checked=False)}
+        result = DefaultCyberneticSociety(max_rounds=2, stop_margin=0.01).run(
+            state, CTX, [organ], AcceptVerifier()
+        )
+        self.assertEqual(result.stopped_by, "incomplete_at_budget_limit")
+        self.assertIn("counterfactual_checked", result.rounds[0].completeness_missing)
+
+    def test_semantic_applicability_gate_blocks_narrow_solver_overreach(self):
+        cert = complete_certificate(
+            domain_recognized=False,
+            full_utterance_parsed=False,
+            no_unconsumed_semantic_content=False,
+        )
+        self.assertFalse(cert.verified_eligible)
+        self.assertIn("domain_recognized", cert.missing())
+        self.assertIn("full_utterance_parsed", cert.missing())
+        self.assertIn("no_unconsumed_semantic_content", cert.missing())
+
+    def test_abductive_expansion_is_forced_back_to_hypothesis(self):
+        base = claim("BASE", confidence=0.6)
+        organ = FixedOrgan("base", [base], [evidence("base-e", "BASE", "L1", 0.6)])
+        result = DefaultCyberneticSociety(
+            max_rounds=1,
+            abductive_expander=OverclaimingAbducer(),
+        ).run({}, CTX, [organ], AcceptVerifier())
+        abducted = next(c for c in result.claims if c.claim_id == "ABDUCED")
+        self.assertEqual(abducted.epistemic, EpistemicState.HYPOTHESIS)
+        self.assertNotEqual(abducted.provenance, Provenance.VERIFIED_NATIVE)
+        self.assertLessEqual(abducted.confidence, 0.95)
 
 
 if __name__ == "__main__":
