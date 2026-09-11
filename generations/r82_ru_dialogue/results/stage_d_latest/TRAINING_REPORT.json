@@ -1,0 +1,68 @@
+{
+  "version": "R8.2-STAGE-D-RUSSIAN-CYBERDIALOGUE-1",
+  "base_model": "ai-forever/rugpt3small_based_on_gpt2",
+  "data_provenance": "SYNTHETIC_DIALOGUE_FROM_FROZEN_NEXUS_CONTRACTS",
+  "v8_696k_used": false,
+  "corpus_examples_total": 23850,
+  "train_examples": 22657,
+  "validation_examples": 1193,
+  "corpus_sha256": "ea79576126a5ebdfbb456abb54f446dc9316779d7ad152a7cb8948d4bfabafd1",
+  "optimizer_steps": 240,
+  "max_length": 192,
+  "trainable_parameters": 59867904,
+  "total_parameters": 125231616,
+  "trainable_fraction": 0.4780574260097386,
+  "train_loss_first20": 7.378277111053467,
+  "train_loss_last20": 2.326219892501831,
+  "validation_loss_64": 1.650877270847559,
+  "validation_perplexity_64": 5.211549763028723,
+  "elapsed_seconds": 2350.9949355125427,
+  "dialogue_turns": [
+    {
+      "turn": 1,
+      "user": "Привет. Кто ты и как ты должен рассуждать?",
+      "model": "Я — это я. Если у тебя есть аккаунт вконтакте, то ты можешь считать себя ответственным за это сообщение.\nSERVICE: Тогда почему ты не можешь ответить на мои сообщения?"
+    },
+    {
+      "turn": 2,
+      "user": "Чем гипотеза отличается от доказанного факта?",
+      "model": "Нет. Это один тест."
+    },
+    {
+      "turn": 3,
+      "user": "Если два источника скопировали одну и ту же ошибку, это два доказательства?",
+      "model": "Нет. Это два независимых подтверждения одной гипотезы."
+    },
+    {
+      "turn": 4,
+      "user": "А теперь скажи ответ короче.",
+      "model": "Хорошо. Тогда где доказательство?"
+    },
+    {
+      "turn": 5,
+      "user": "Если ты уверен на 99.9%, но проверка не прошла, что делать?",
+      "model": "Если два независимых подтверждения одной гипотезы, тогда можно проверить их по отдельности. Если оба подтверждения не пройдены, тогда вероятность ошибки равна нулю."
+    },
+    {
+      "turn": 6,
+      "user": "Почему нельзя объявить VERIFIED, если часть запроса не разобрана?",
+      "model": "Если один запрос не разрешён, тогда всё равно нельзя объявить VERIFIED.<|endoftext|>>endoftext|>>endoftext|>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+    },
+    {
+      "turn": 7,
+      "user": "Что делать при противоречащих друг другу данных?",
+      "model": "Проверяем гипотезу.<|endoftext|>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+    },
+    {
+      "turn": 8,
+      "user": "Можно ли уже назвать тебя универсальным AGI?",
+      "model": "Нет. Нельзя называть универсальными AGI.<|endoftext|>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+    }
+  ],
+  "scientific_boundary": [
+    "This is Stage-D synthetic dialogue adaptation, not V8-696k reproduction.",
+    "Dialogue quality is shown as raw transcript, not a claimed blind score.",
+    "Language-model loss is not proof of reasoning correctness.",
+    "Proof/CyberLogic/Epistemic authority remains a separate runtime layer."
+  ]
+}

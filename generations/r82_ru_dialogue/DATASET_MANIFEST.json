@@ -1,0 +1,53 @@
+{
+  "version": "R8.2-RU-DIALOGUE-DESIGN-1",
+  "status": "PRETRAINING_DATA_AUDIT_REQUIRED",
+  "datasets": {
+    "v8_language": {
+      "name": "NEXUS-FINANCE-v8.0.0-BDH-INSPIRED-FULL.zip",
+      "drive_file_id": "1K9EQPEglYG1jptShOdQPUVZs9IO7RGQ3",
+      "drive_parent_folder_id": "1z6hPvfR6Byi0s7RC8IH_86h8_k0IuUdT",
+      "archive_size_bytes": 10721585,
+      "historical_archive_sha256": "499cf01d42bb4f913a287b42301293edca2780c55203e2d0a45d5dceaefe7b68",
+      "historical_audit_claims": {
+        "source_language_utterances": 696000,
+        "domains": 180,
+        "finance_application_domains": 150,
+        "conversation_domains": 30,
+        "knowledge_records": 1446,
+        "transfer_edges": 2760,
+        "conversation_e2e": "16/16",
+        "compact_router_holdout": 0.996
+      },
+      "raw_member_row_count_reverified_for_r82": false,
+      "raw_member_sha256_reverified_for_r82": false,
+      "raw_replay_permitted": false,
+      "note": "Archive physically located and downloaded from Drive. Raw member extraction/count/hash must complete before raw replay is marked true. Historical audit values are provenance, not a new benchmark."
+    },
+    "r745_business_ru": {
+      "name": "R7.45 Russian business/autobusiness/Omsk corpus",
+      "historical_train_rows": 240000,
+      "domains": 62,
+      "role": "natural specialized Russian semantic/domain corpus",
+      "raw_replay_permitted": true
+    },
+    "r746_graph": {
+      "name": "R7.46 procedural directed graph substrate",
+      "nodes": 2500000,
+      "directed_edges": 30000000,
+      "role": "graph training substrate",
+      "warning": "Procedural edges are not automatically external facts."
+    },
+    "v15_teacher": {
+      "name": "R7.46/V15 contextual Russian teacher",
+      "role": "optional representation/distillation regularizer",
+      "authority": false
+    }
+  },
+  "split_rules": [
+    "No random-row-only split when template/style/session family can leak.",
+    "Conversation sessions, if present, are indivisible between train and evaluation.",
+    "Disclosed historical dialogue E2E cases are regression only, never a new blind.",
+    "Synthetic reconstructed dialogue must have SYNTHETIC_DIALOGUE provenance.",
+    "Fresh final dialogue benchmark must be created after freeze."
+  ]
+}

@@ -1,0 +1,35 @@
+name: NEXUS R8.2 sovereign contracts
+
+on:
+  push:
+    branches: [r82-russian-cognitive-dialogue-graph]
+    paths:
+      - 'generations/r82_ru_dialogue/**'
+      - '.github/workflows/r82_contracts.yml'
+  pull_request:
+    paths:
+      - 'generations/r82_ru_dialogue/**'
+      - '.github/workflows/r82_contracts.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile R8.2 sources
+        run: python -m compileall -q generations/r82_ru_dialogue
+      - name: Existing dialogue runtime contracts
+        run: python -m unittest -v generations.r82_ru_dialogue.test_runtime_contracts
+      - name: Cybernetic-logic sovereign contracts
+        run: python -m unittest -v generations.r82_ru_dialogue.test_cyberlogic_contracts
+      - name: Research Cortex sovereign bridge contracts
+        run: python -m unittest -v generations.r82_ru_dialogue.test_research_bridge
+      - name: Raw V8 auditor syntax/CLI gate
+        run: python -m generations.r82_ru_dialogue.audit_v8_raw --help > /dev/null

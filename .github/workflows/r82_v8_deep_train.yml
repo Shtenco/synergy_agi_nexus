@@ -1,0 +1,124 @@
+name: NEXUS R8.2 V8 deep train
+
+on:
+  push:
+    branches: [r82-russian-cognitive-dialogue-graph]
+    paths:
+      - 'generations/r82_ru_dialogue/train_r82_v8_github.py'
+      - 'generations/r82_ru_dialogue/audit_v8_raw.py'
+      - '.github/workflows/r82_v8_deep_train.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-train-dialogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      V8_FILE_ID: 1K9EQPEglYG1jptShOdQPUVZs9IO7RGQ3
+      V8_SHA256: 499cf01d42bb4f913a287b42301293edca2780c55203e2d0a45d5dceaefe7b68
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install CPU training stack
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy scikit-learn joblib gdown
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Acquire historical V8 archive from Drive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .r82_data
+          python -m gdown --id "$V8_FILE_ID" -O .r82_data/NEXUS-V8.zip || true
+          if [ ! -s .r82_data/NEXUS-V8.zip ]; then
+            curl -fL --retry 3 --retry-delay 2 \
+              "https://drive.usercontent.google.com/download?id=${V8_FILE_ID}&export=download&confirm=t" \
+              -o .r82_data/NEXUS-V8.zip
+          fi
+          ACTUAL="$(sha256sum .r82_data/NEXUS-V8.zip | awk '{print $1}')"
+          echo "downloaded_sha256=$ACTUAL"
+          test "$ACTUAL" = "$V8_SHA256"
+
+      - name: Independent V8 raw audit
+        run: |
+          python -m generations.r82_ru_dialogue.audit_v8_raw \
+            .r82_data/NEXUS-V8.zip \
+            --out V8_RAW_AUDIT.json
+          python - <<'PY'
+          import json
+          x=json.load(open('V8_RAW_AUDIT.json', encoding='utf-8'))
+          c=x['corpus']
+          print('rows=',c['valid_jsonl_rows'],'labels=',c['unique_primary_labels'])
+          print('session=',c['has_explicit_session_linkage'],'turn=',c['has_explicit_turn_linkage'])
+          print('raw_replay_permitted=',x['raw_replay_permitted'])
+          if not x['raw_replay_permitted']:
+              raise SystemExit('V8 raw audit gate failed; training forbidden')
+          PY
+
+      - name: Train full-corpus semantic organ + Russian Surface Cortex
+        run: |
+          mkdir -p r82_train_out
+          python -m generations.r82_ru_dialogue.train_r82_v8_github \
+            .r82_data/NEXUS-V8.zip \
+            --out r82_train_out \
+            --surface-reservoir 120000 \
+            --surface-steps 1800 \
+            --seed 820260910
+
+      - name: Write compact run summary
+        if: always()
+        shell: bash
+        run: |
+          echo '# NEXUS R8.2 V8 deep train' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f V8_RAW_AUDIT.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          x=json.load(open('V8_RAW_AUDIT.json',encoding='utf-8')); c=x['corpus']
+          print(f"- archive SHA verified: **{x['archive_sha_matches_historical_release']}**")
+          print(f"- raw rows: **{c['valid_jsonl_rows']}**")
+          print(f"- labels/domains: **{c['unique_primary_labels']}**")
+          print(f"- explicit session linkage: **{c['has_explicit_session_linkage']}**")
+          print(f"- explicit turn linkage: **{c['has_explicit_turn_linkage']}**")
+          print(f"- exact duplicate fraction: **{c['exact_duplicate_fraction']:.6f}**")
+          print(f"- normalized duplicate fraction: **{c['normalized_duplicate_fraction']:.6f}**")
+          PY
+          fi
+          if [ -f r82_train_out/TRAINING_REPORT.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          x=json.load(open('r82_train_out/TRAINING_REPORT.json',encoding='utf-8'))
+          r=x['router']; s=x['surface']
+          print(f"- router train rows: **{r['train_rows']}**")
+          print(f"- router family-holdout accuracy: **{r['accuracy']:.6f}**")
+          print(f"- router macro-F1: **{r['macro_f1']:.6f}**")
+          print(f"- surface parameters: **{s['parameters']:,}**")
+          print(f"- surface loss first100 → last100: **{s['loss_first100']:.4f} → {s['loss_last100']:.4f}**")
+          print(f"- discovered response-field pairs: **{x['response_field_pairs_found']}**")
+          print(f"- discovered session-turn pairs: **{x['session_turn_pairs_found']}**")
+          print(f"- surface mode: **{x['surface_mode']}**")
+          PY
+          fi
+          if [ -f r82_train_out/DIALOGUE_RAW.md ]; then
+            echo '' >> "$GITHUB_STEP_SUMMARY"
+            cat r82_train_out/DIALOGUE_RAW.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit, checkpoints, metrics and raw dialogue
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXUS-R82-V8-DEEP-TRAIN-${{ github.run_number }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            V8_RAW_AUDIT.json
+            r82_train_out/**
