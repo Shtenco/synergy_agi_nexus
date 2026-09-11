@@ -29,5 +29,7 @@ jobs:
         run: python -m unittest -v generations.r82_ru_dialogue.test_runtime_contracts
       - name: Cybernetic-logic sovereign contracts
         run: python -m unittest -v generations.r82_ru_dialogue.test_cyberlogic_contracts
+      - name: Research Cortex sovereign bridge contracts
+        run: python -m unittest -v generations.r82_ru_dialogue.test_research_bridge
       - name: Raw V8 auditor syntax/CLI gate
         run: python -m generations.r82_ru_dialogue.audit_v8_raw --help > /dev/null
