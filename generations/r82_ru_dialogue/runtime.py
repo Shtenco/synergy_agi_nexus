@@ -8,7 +8,9 @@ from .contracts import (
     Claim,
     ContextFrame,
     DialogueResult,
+    EpistemicState,
     Evidence,
+    Provenance,
     ReasoningTraceSummary,
     SemanticSegment,
     SurfaceDraft,
@@ -64,6 +66,23 @@ class CyberneticSociety(Protocol):
     ) -> object: ...
 
 
+class ResearchBroker(Protocol):
+    """R8.3 external research organ.
+
+    The broker may search web/papers/datasets/repos and return candidate
+    claims/evidence. Runtime sanitizes every returned object so research can
+    never mint VERIFIED_NATIVE authority for itself.
+    """
+
+    def research(
+        self,
+        text: str,
+        unknowns: Sequence[str],
+        graph_state: Dict[str, object],
+        context: ContextFrame,
+    ) -> tuple[Sequence[Claim], Sequence[Evidence], Optional[ReasoningTraceSummary]]: ...
+
+
 class EpistemicGovernor(Protocol):
     def arbitrate(
         self,
@@ -101,8 +120,11 @@ class NexusR82:
 
     When ``cybernetic_society`` is present, the reasoning phase is iterative:
     Hypothesis -> discriminating Test/Query -> Evidence -> revised Hypothesis.
-    This restores the strongest R7.13/R7.16/R7.18/R7.19/R7.33 mechanism while
-    keeping final authority in the verifier/governor path.
+
+    When ``research_broker`` is present and the first epistemic pass exposes
+    unresolved external unknowns, R8.2 may run exactly one bounded R8.3
+    research cycle, ingest its claims as LEARNED_NOW/TRUSTED_KNOWLEDGE, and
+    re-arbitrate. External research never receives VERIFIED_NATIVE authority.
     """
 
     def __init__(
@@ -117,6 +139,7 @@ class NexusR82:
         surface_cortex: SurfaceCortex,
         surface_verifier: SurfaceVerifier,
         cybernetic_society: Optional[CyberneticSociety] = None,
+        research_broker: Optional[ResearchBroker] = None,
         max_surface_attempts: int = 3,
     ) -> None:
         if not reasoning_organs:
@@ -130,6 +153,7 @@ class NexusR82:
         self.surface_cortex = surface_cortex
         self.surface_verifier = surface_verifier
         self.cybernetic_society = cybernetic_society
+        self.research_broker = research_broker
         self.max_surface_attempts = max(1, int(max_surface_attempts))
 
     def _reason(
@@ -144,8 +168,6 @@ class NexusR82:
                 self.reasoning_organs,
                 self.proof_verifier,
             )
-            # Structural duck-typing keeps runtime independent of a particular
-            # cybernetic implementation while preserving the public protocol.
             return list(result.claims), list(result.evidence), list(result.traces)
 
         all_claims: List[Claim] = []
@@ -158,6 +180,86 @@ class NexusR82:
             traces.append(trace)
         return all_claims, all_evidence, traces
 
+    def _proof_filter(
+        self,
+        claims: Sequence[Claim],
+        evidence: Sequence[Evidence],
+        graph_state: Dict[str, object],
+    ) -> tuple[List[Claim], List[Evidence]]:
+        verified_claims: List[Claim] = []
+        for claim in claims:
+            if claim.epistemic == EpistemicState.DERIVED:
+                if self.proof_verifier.verify_claim(claim, graph_state):
+                    verified_claims.append(claim)
+            else:
+                verified_claims.append(claim)
+        accepted_ids = {claim.claim_id for claim in verified_claims}
+        return verified_claims, [e for e in evidence if e.claim_id in accepted_ids]
+
+    @staticmethod
+    def _sanitize_research_claim(claim: Claim) -> Claim:
+        # Web/research output can be learned evidence or a hypothesis, never a
+        # self-minted sovereign fact. DERIVED is preserved so ProofVerifier can
+        # still validate calculations reproduced by the research agent.
+        epistemic = claim.epistemic
+        if epistemic == EpistemicState.KNOWN:
+            epistemic = EpistemicState.LEARNED_NOW
+        provenance = claim.provenance
+        if provenance == Provenance.VERIFIED_NATIVE:
+            provenance = Provenance.TRUSTED_KNOWLEDGE
+        return replace(
+            claim,
+            epistemic=epistemic,
+            provenance=provenance,
+            confidence=min(0.999, max(0.0, float(claim.confidence))),
+        )
+
+    @staticmethod
+    def _sanitize_research_evidence(evidence: Evidence) -> Evidence:
+        provenance = evidence.provenance
+        if provenance == Provenance.VERIFIED_NATIVE:
+            provenance = Provenance.TRUSTED_KNOWLEDGE
+        return replace(
+            evidence,
+            provenance=provenance,
+            confidence=min(0.999, max(0.0, float(evidence.confidence))),
+            verified=False,
+        )
+
+    def _research_once(
+        self,
+        text: str,
+        plan: AnswerPlan,
+        graph_state: Dict[str, object],
+        context: ContextFrame,
+        claims: Sequence[Claim],
+        evidence: Sequence[Evidence],
+        traces: Sequence[ReasoningTraceSummary],
+    ) -> tuple[List[Claim], List[Evidence], List[ReasoningTraceSummary]]:
+        if self.research_broker is None:
+            return list(claims), list(evidence), list(traces)
+        unknowns = list(plan.unknowns) + list(plan.required_questions)
+        if not unknowns:
+            return list(claims), list(evidence), list(traces)
+
+        r_claims, r_evidence, r_trace = self.research_broker.research(
+            text,
+            unknowns,
+            graph_state,
+            context,
+        )
+        safe_claims = [self._sanitize_research_claim(c) for c in r_claims]
+        safe_evidence = [self._sanitize_research_evidence(e) for e in r_evidence]
+        merged_claims, merged_evidence = self._proof_filter(
+            [*claims, *safe_claims],
+            [*evidence, *safe_evidence],
+            graph_state,
+        )
+        merged_traces = list(traces)
+        if r_trace is not None:
+            merged_traces.append(r_trace)
+        return merged_claims, merged_evidence, merged_traces
+
     def respond(self, text: str, context: ContextFrame) -> DialogueResult:
         if not text.strip():
             raise ValueError("empty user turn")
@@ -169,20 +271,7 @@ class NexusR82:
 
         graph_state = self.graph_brain.encode_segments(segments, bound)
         all_claims, all_evidence, traces = self._reason(graph_state, bound)
-
-        # Proof-verifiable claims are checked again immediately before governor
-        # promotion. The duplicate boundary is intentional defense-in-depth:
-        # even a custom cybernetic society cannot bypass sovereign verification.
-        verified_claims: List[Claim] = []
-        for claim in all_claims:
-            if claim.epistemic.value == "DERIVED":
-                if self.proof_verifier.verify_claim(claim, graph_state):
-                    verified_claims.append(claim)
-            else:
-                verified_claims.append(claim)
-
-        accepted_ids = {claim.claim_id for claim in verified_claims}
-        all_evidence = [e for e in all_evidence if e.claim_id in accepted_ids]
+        verified_claims, all_evidence = self._proof_filter(all_claims, all_evidence, graph_state)
 
         approved_claims, plan, updated_context = self.epistemic_governor.arbitrate(
             verified_claims,
@@ -191,7 +280,25 @@ class NexusR82:
             bound,
         )
 
-        # Hard surface firewall: any unmapped factual assertion is a failure.
+        # External research is an active inquiry organ, not an answer bypass.
+        # Run once only after the sovereign governor exposes concrete unknowns.
+        if self.research_broker is not None and (plan.unknowns or plan.required_questions):
+            researched_claims, researched_evidence, traces = self._research_once(
+                text,
+                plan,
+                graph_state,
+                updated_context,
+                verified_claims,
+                all_evidence,
+                traces,
+            )
+            approved_claims, plan, updated_context = self.epistemic_governor.arbitrate(
+                researched_claims,
+                researched_evidence,
+                graph_state,
+                updated_context,
+            )
+
         last_verification = VerificationResult(
             accepted=False,
             reason="surface generation not attempted",
@@ -216,8 +323,6 @@ class NexusR82:
                     context=replace(updated_context, turn_index=updated_context.turn_index + 1),
                 )
 
-        # Fail closed. A pretty answer with unsupported claims is worse than an
-        # explicit bounded failure/clarification request.
         fallback = self._safe_fallback(plan, last_verification)
         return DialogueResult(
             text=fallback,
