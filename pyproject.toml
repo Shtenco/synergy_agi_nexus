@@ -13,6 +13,7 @@ test = ["pytest>=8"]
 
 [project.scripts]
 nexus-http = "agi_nexus.http_main:main"
+nexus-shttps = "agi_nexus.shttps_main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
