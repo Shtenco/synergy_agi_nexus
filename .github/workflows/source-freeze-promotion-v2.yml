@@ -1,0 +1,30 @@
+name: NEXUS Source Freeze Promotion v2
+
+on:
+  pull_request:
+    paths:
+      - 'config/source_freeze_v2.json'
+      - 'src/agi_nexus/promotion.py'
+      - 'tests/test_promotion_v2.py'
+      - 'docs/SOURCE_FREEZE_AND_PROMOTION_V2.md'
+      - '.github/workflows/source-freeze-promotion-v2.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: nexus-source-freeze-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e . pytest
+      - run: python -m pytest -q tests/test_promotion_v2.py

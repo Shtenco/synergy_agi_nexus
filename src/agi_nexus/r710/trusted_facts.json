@@ -1,0 +1,22 @@
+{
+  "astronomy": {
+    "distance_ly_from_earth": {"Sun": 1.5813e-05, "Proxima Centauri": 4.2465, "Sirius": 8.6, "Polaris": 433.0},
+    "nearest_planet_mean_km": {"Moon": 384400, "Venus": 41400000, "Mars": 78300000, "Mercury": 91600000},
+    "planets_from_sun": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
+  },
+  "science": {
+    "symbols": {"gold": "Au", "iron": "Fe", "silver": "Ag", "oxygen": "O", "carbon": "C", "sodium": "Na", "potassium": "K"},
+    "charges": {"electron": "negative", "proton": "positive", "neutron": "neutral"},
+    "phase": {"solid_to_gas": "sublimation", "gas_to_liquid": "condensation", "liquid_to_gas_surface": "evaporation"},
+    "biology": {"photosynthesis_gas": "carbon dioxide", "cell_energy_carrier": "ATP", "aerobic_respiration_organelle": "mitochondrion"}
+  },
+  "computing": {
+    "http": {"404": "resource not found", "200": "success", "403": "forbidden", "500": "server error"},
+    "principles": {"least_privilege": "minimum necessary permissions", "raid1": "mirroring", "dns_cache": "cache name resolution", "tls": "encrypted authenticated channel", "dhcp": "automatic network configuration", "ssh": "secure remote access", "api": "software component interface"}
+  },
+  "russian": {
+    "government": {"благодаря": "dative", "согласно": "dative", "вопреки": "dative", "навстречу": "dative", "по": "dative"},
+    "stress_families": {"звон": "ending", "позвон": "ending", "дозвон": "ending", "перезвон": "ending"},
+    "stress_lexicon": {"каталог": "каталОг", "договор": "договОр", "торты": "тОрты", "красивее": "красИвее", "баловать": "баловАть", "облегчить": "облегчИть"}
+  }
+}

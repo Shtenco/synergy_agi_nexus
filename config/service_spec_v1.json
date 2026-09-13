@@ -1,0 +1,16 @@
+{
+  "schema": "synergy.service-spec/v1",
+  "service_id": "nexus",
+  "kind": "NEXUS",
+  "repository": "Shtenco/agi_nexus",
+  "source_commit": "cbc06e83f7f9e242719667e446a090894e11eef1",
+  "required_capabilities": ["NEXUS_COMPUTE"],
+  "runtime_form": "PYTHON_LIBRARY_ONLY",
+  "entrypoint": null,
+  "health_probe": null,
+  "lifecycle_protocol": null,
+  "wire_protocol": null,
+  "readiness_status": "SERVICE_INTERFACE_NOT_IMPLEMENTED",
+  "execution_authority": "NONE",
+  "spec_digest": "ab83e935b2cdd2eb855737a18f4e8e039ebb166cfe431d8d1652a44a63af522d"
+}

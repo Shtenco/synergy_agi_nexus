@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.runtime-source/v2",
+  "generation": "MINIMAL_NEXUS_CORE_V2_20260822",
+  "runtime_form": "PYTHON_STDLIB_SERVICE",
+  "entrypoint": "python -m agi_nexus.nexus_service_v2",
+  "operations": ["STATUS", "FORMAL_REASON", "SMALLWORLD_EXACT_DIGESTS", "CYBER_STEP"],
+  "components": ["R710_FORMAL_PROOF", "EXACT_SMALLWORLD", "BOUNDED_CYBER_STATE"],
+  "authority_order": ["FORMAL_VERIFIED", "CYBER_FEEDBACK", "NONE"],
+  "neural_hypothesis_status": "NOT_MIGRATED_NOT_REQUIRED_FOR_EXACT_CORE",
+  "wire_limits": {"max_frame_bytes": 65536, "max_question_bytes": 16384, "max_option_bytes": 4096, "max_state_steps": 64},
+  "network_access": "NONE",
+  "filesystem_request_authority": "NONE",
+  "process_execution_authority": "NONE",
+  "financial_authority": "NONE",
+  "build_artifact_digest": null,
+  "build_evidence_digest": null,
+  "source_status": "SERVICE_INTERFACE_IMPLEMENTED_NOT_BUILD_VERIFIED",
+  "execution_authority": "NONE"
+}
