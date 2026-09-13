@@ -11,6 +11,9 @@ requires-python = ">=3.11"
 http = ["fastapi>=0.115", "uvicorn>=0.30", "pydantic>=2.7"]
 test = ["pytest>=8"]
 
+[project.scripts]
+nexus-http = "agi_nexus.http_main:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

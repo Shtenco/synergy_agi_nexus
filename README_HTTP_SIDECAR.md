@@ -2,7 +2,17 @@
 
 Additive HTTP transport around the existing proof-first `nexus_service_v3` plus namespaced operational semantic/episodic memory.
 
-Endpoints:
+## Run
+
+```bash
+python -m pip install -e '.[http]'
+nexus-http
+```
+
+Default bind is `127.0.0.1:8130`; override with `NEXUS_BIND_HOST` / `NEXUS_BIND_PORT`. Optional bearer auth uses `NEXUS_API_TOKEN`.
+
+## Endpoints
+
 - `GET /health`
 - `POST /v1/runtime` — exact existing NEXUS operations (`STATUS`, `FORMAL_REASON`, `SMALLWORLD_EXACT_DIGESTS`, `CYBER_STEP`)
 - `POST /v1/memory/upsert`
