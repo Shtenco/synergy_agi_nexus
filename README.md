@@ -245,3 +245,38 @@ For Financial OS integration, the maximum default AI action remains a bounded pr
 - v3-MoE P1 пока доказывает качество **routing**, а не окончательный end-to-end прирост answer accuracy.
 
 <!-- NEXUS-REPORTS-BENCHMARKS:END -->
+
+
+<!-- SYNERGY-FEDERATION-PASSPORT:START -->
+---
+
+## 🧭 SYNERGY federation passport
+
+**Домен:** 🧠 Canonical AGI / NEXUS authority  
+**Архитектурный родитель:** [`synergy_system`](https://github.com/Shtenco/synergy_system)  
+**Архитектурный корень:** [`synergy_system`](https://github.com/Shtenco/synergy_system)
+
+```mermaid
+flowchart LR
+    SYS[🧭 synergy_system] --> P[synergy_system]
+    P --> THIS[synergy_agi_nexus]
+    THIS --> E[📦 Evidence / outputs]
+```
+
+Архитектурная принадлежность не заменяет доказанную интеграцию. Runtime-связь должна подтверждаться контрактами, manifests, deployment-конфигурацией или тестами.
+
+### Федерационный принцип
+
+Каждый репозиторий отвечает только за свой тип истины и не должен незаметно присваивать полномочия соседнего домена.
+
+### Навигация
+
+- [📚 Атлас 75 репозиториев](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
+- [🧾 Registry](https://github.com/Shtenco/synergy_system/blob/main/registry/SYNERGY_REPOSITORIES.json)
+- [🧭 Architecture root](https://github.com/Shtenco/synergy_system)
+
+### Evidence rule
+
+Любое сильное утверждение должно указывать на воспроизводимый тест, benchmark, ledger/evidence artifact или формально проверяемый контракт.
+
+<!-- SYNERGY-FEDERATION-PASSPORT:END -->
