@@ -280,3 +280,40 @@ flowchart LR
 Любое сильное утверждение должно указывать на воспроизводимый тест, benchmark, ledger/evidence artifact или формально проверяемый контракт.
 
 <!-- SYNERGY-FEDERATION-PASSPORT:END -->
+
+---
+
+# 🧠 Фактическая карта `main` — Canonical NEXUS
+
+На `main` этого репозитория уже присутствует не только архитектурный README, но и две материализованные поколения NEXUS:
+
+```text
+generations/nexus_v13/
+  formal_logic.py
+  language_critic.py
+  russian_language.py
+  world_model.py
+
+generations/nexus_v18/
+  model.py
+  russian_runtime.py
+  smallworld.py
+  system.py
+```
+
+Дополнительно сохранены provenance и freeze/record документы: `MIGRATION_MANIFEST.md`, `NEXUS_OMEGA_FLASH_V1.md`, `freeze_records/`, `records/`.
+
+```mermaid
+flowchart LR
+    OLGA[🕰️ synergy_agi_olga lineage] --> MIG[📜 Migration manifest]
+    MIG --> V13[🧠 NEXUS V13]
+    V13 --> V18[🧠 NEXUS V18]
+    V18 --> FREEZE[🔒 Freeze / records]
+    FREEZE --> API[📦 Canonical inference artifact]
+```
+
+### Разделение с `synergy_gllm_nexus`
+
+- `synergy_agi_nexus` — канонический дом NEXUS generations и проверяемого inference core;
+- `synergy_gllm_nexus` — активная экспериментальная/benchmark линия;
+- перенос из research runtime сюда должен происходить только через freeze + provenance + benchmark evidence.
