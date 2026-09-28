@@ -10,10 +10,10 @@ This repository is the target home for **validated NEXUS model generations**, in
 
 It is intentionally separate from:
 
-- `Shtenco/agi_olga` — historical OLGA / SmallWorld / NEXUS research lineage;
-- `Shtenco/nexus_science_agent` — scientific search/research orchestration;
+- `Shtenco/synergy_agi_olga` — historical OLGA / SmallWorld / NEXUS research lineage;
+- `Shtenco/synergy_nexus_science_agent` — scientific search/research orchestration;
 - `Shtenco/synergy_financial_os` — financial/accounting authority;
-- `Shtenco/synergychain` — portal/control plane.
+- `Shtenco/synergy_chain` — portal/control plane.
 
 ## Target architecture
 
