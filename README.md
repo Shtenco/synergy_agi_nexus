@@ -250,17 +250,17 @@ For Financial OS integration, the maximum default AI action remains a bounded pr
 <!-- SYNERGY-FEDERATION-PASSPORT:START -->
 ---
 
-## 🧭 SYNERGY federation passport
+##  SYNERGY federation passport
 
-**Домен:** 🧠 Canonical AGI / NEXUS authority  
+**Домен:**  Canonical AGI / NEXUS authority  
 **Архитектурный родитель:** [`synergy_system`](https://github.com/Shtenco/synergy_system)  
 **Архитектурный корень:** [`synergy_system`](https://github.com/Shtenco/synergy_system)
 
 ```mermaid
 flowchart LR
-    SYS[🧭 synergy_system] --> P[synergy_system]
+    SYS[ synergy_system] --> P[synergy_system]
     P --> THIS[synergy_agi_nexus]
-    THIS --> E[📦 Evidence / outputs]
+    THIS --> E[ Evidence / outputs]
 ```
 
 Архитектурная принадлежность не заменяет доказанную интеграцию. Runtime-связь должна подтверждаться контрактами, manifests, deployment-конфигурацией или тестами.
@@ -271,9 +271,9 @@ flowchart LR
 
 ### Навигация
 
-- [📚 Атлас 75 репозиториев](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
-- [🧾 Registry](https://github.com/Shtenco/synergy_system/blob/main/registry/SYNERGY_REPOSITORIES.json)
-- [🧭 Architecture root](https://github.com/Shtenco/synergy_system)
+- [ Атлас 75 репозиториев](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
+- [ Registry](https://github.com/Shtenco/synergy_system/blob/main/registry/SYNERGY_REPOSITORIES.json)
+- [ Architecture root](https://github.com/Shtenco/synergy_system)
 
 ### Evidence rule
 
@@ -283,7 +283,7 @@ flowchart LR
 
 ---
 
-# 🧠 Фактическая карта `main` — Canonical NEXUS
+#  Фактическая карта `main` — Canonical NEXUS
 
 На `main` этого репозитория уже присутствует не только архитектурный README, но и две материализованные поколения NEXUS:
 
@@ -305,11 +305,11 @@ generations/nexus_v18/
 
 ```mermaid
 flowchart LR
-    OLGA[🕰️ synergy_agi_olga lineage] --> MIG[📜 Migration manifest]
-    MIG --> V13[🧠 NEXUS V13]
-    V13 --> V18[🧠 NEXUS V18]
-    V18 --> FREEZE[🔒 Freeze / records]
-    FREEZE --> API[📦 Canonical inference artifact]
+    OLGA[ synergy_agi_olga lineage] --> MIG[ Migration manifest]
+    MIG --> V13[ NEXUS V13]
+    V13 --> V18[ NEXUS V18]
+    V18 --> FREEZE[ Freeze / records]
+    FREEZE --> API[ Canonical inference artifact]
 ```
 
 ### Разделение с `synergy_gllm_nexus`
