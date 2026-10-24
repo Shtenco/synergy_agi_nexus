@@ -1,3 +1,10 @@
+<!-- SCIENTIFIC-PROFILE-2026:START -->
+<img src="assets/readme/research-architecture.svg" width="100%" alt="NEXUS / COGNITIVE MODEL FEDERATION"/>
+
+**[Научное досье / Scientific Research Profile](docs/SCIENTIFIC_PROFILE_2026.md)** — оригинальные алгоритмы, архитектура, математическая постановка, применение и протокол воспроизводимости. Предыдущий README сохранён полностью.
+
+<!-- SCIENTIFIC-PROFILE-2026:END -->
+
 # AGI NEXUS
 
 **Canonical NEXUS intelligence core for the SYNERGY ecosystem.**
